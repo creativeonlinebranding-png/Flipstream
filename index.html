@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FlipStream • Music Streaming</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#070A12;
+      --card:rgba(255,255,255,.06);
+      --stroke:rgba(255,255,255,.10);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.65);
+      --glow1:#28d6ff;
+      --glow2:#7b2cff;
+      --glow3:#ff4fd8;
+      --glow4:#ffb84a;
+      --radius:18px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'Poppins',sans-serif;
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(40,214,255,.16), transparent 55%),
+                  radial-gradient(900px 700px at 80% 15%, rgba(123,44,255,.14), transparent 55%),
+                  radial-gradient(900px 700px at 70% 80%, rgba(255,79,216,.12), transparent 55%),
+                  radial-gradient(900px 700px at 20% 85%, rgba(255,184,74,.10), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    /* animated particles */
+    .spark{
+      position:fixed; inset:0; pointer-events:none; z-index:0;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(40,214,255,.25) 0 2px, transparent 3px),
+        radial-gradient(circle at 30% 70%, rgba(255,79,216,.18) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 40%, rgba(255,184,74,.16) 0 2px, transparent 3px),
+        radial-gradient(circle at 65% 15%, rgba(123,44,255,.18) 0 2px, transparent 3px);
+      opacity:.7;
+      filter: blur(.2px);
+      animation: drift 10s linear infinite;
+    }
+    @keyframes drift{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-18px)}
+      100%{transform:translateY(0)}
+    }
+
+    .wrap{
+      position:relative;
+      z-index:1;
+      max-width:980px;
+      margin:0 auto;
+      padding:22px 16px 120px;
+    }
+
+    /* Top bar */
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+      border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius:999px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 20px 70px rgba(0,0,0,.45);
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+
+    /* FlipStream animated icon */
+    .logo{
+      width:46px; height:46px;
+      border-radius:14px;
+      background: linear-gradient(135deg, rgba(40,214,255,.9), rgba(123,44,255,.9));
+      position:relative;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.12) inset,
+        0 18px 45px rgba(123,44,255,.20),
+        0 18px 45px rgba(40,214,255,.14);
+      overflow:hidden;
+      animation: float 3.6s ease-in-out infinite;
+    }
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-6px)}
+    }
+    .logo:before{
+      content:"";
+      position:absolute;
+      inset:-30%;
+      background: conic-gradient(from 180deg, rgba(255,184,74,.95), rgba(255,79,216,.9), rgba(123,44,255,.9), rgba(40,214,255,.95), rgba(255,184,74,.95));
+      filter: blur(10px);
+      opacity:.65;
+      animation: spin 6s linear infinite;
+    }
+    @keyframes spin{
+      to{transform:rotate(360deg)}
+    }
+    .logo:after{
+      content:"▶";
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      font-size:18px;
+      color:white;
+      text-shadow: 0 10px 30px rgba(0,0,0,.55);
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.35), transparent 55%);
+    }
+
+    .brand h1{
+      font-size:18px;
+      margin:0;
+      letter-spacing:.2px;
+      line-height:1.1;
+    }
+    .brand p{
+      margin:2px 0 0;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .pill{
+      font-size:12px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background:rgba(255,255,255,.04);
+      color:rgba(255,255,255,.80);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      white-space:nowrap;
+    }
+    .dot{
+      width:7px;height:7px;border-radius:50%;
+      background:linear-gradient(135deg, var(--glow1), var(--glow3));
+      box-shadow:0 0 18px rgba(40,214,255,.55);
+      animation:pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{transform:scale(1); opacity:.65}
+      50%{transform:scale(1.35); opacity:1}
+    }
+
+    /* Hero */
+    .hero{
+      margin-top:18px;
+      padding:18px;
+      border-radius:var(--radius);
+      border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      backdrop-filter: blur(10px);
+      box-shadow: 0 25px 90px rgba(0,0,0,.55);
+      overflow:hidden;
+      position:relative;
+    }
+    .hero:before{
+      content:"";
+      position:absolute;
+      inset:-40%;
+      background:
+        radial-gradient(circle at 25% 20%, rgba(40,214,255,.18), transparent 55%),
+        radial-gradient(circle at 70% 30%, rgba(123,44,255,.18), transparent 58%),
+        radial-gradient(circle at 55% 70%, rgba(255,79,216,.12), transparent 55%),
+        radial-gradient(circle at 20% 80%, rgba(255,184,74,.10), transparent 55%);
+      transform:rotate(8deg);
+    }
+    .heroInner{
+      position:relative;
+      display:flex;
+      gap:16px;
+      align-items:flex-start;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+    .heroTitle{
+      margin:0;
+      font-size:26px;
+      line-height:1.15;
+      letter-spacing:.2px;
+    }
+    .heroSub{
+      margin:8px 0 0;
+      color:var(--muted);
+      max-width:640px;
+      font-size:13px;
+    }
+    .ctaRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:14px;
+    }
+    .btn{
+      border:none;
+      cursor:pointer;
+      border-radius:14px;
+      padding:12px 14px;
+      font-weight:700;
+      font-family:'Poppins',sans-serif;
+      color:white;
+      background: linear-gradient(135deg, rgba(40,214,255,.95), rgba(123,44,255,.95), rgba(255,79,216,.95));
+      box-shadow: 0 18px 55px rgba(123,44,255,.20);
+      transition: transform .15s ease, filter .15s ease;
+    }
+    .btn:hover{transform:translateY(-2px); filter:saturate(1.15)}
+    .btn.secondary{
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--stroke);
+      color:rgba(255,255,255,.86);
+      box-shadow:none;
+    }
+
+    /* List */
+    .grid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: 1.4fr .9fr;
+      gap:14px;
+    }
+    @media(max-width:900px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      border:1px solid var(--stroke);
+      background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius:var(--radius);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 25px 80px rgba(0,0,0,.50);
+      overflow:hidden;
+    }
+
+    .cardHead{
+      padding:14px 14px 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .cardHead h3{
+      margin:0;
+      font-size:14px;
+      letter-spacing:.2px;
+    }
+    .small{
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    .list{
+      padding:8px;
+    }
+    .track{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid transparent;
+      cursor:pointer;
+      transition:.15s ease;
+      position:relative;
+    }
+    .track:hover{
+      background:rgba(255,255,255,.05);
+      border-color:rgba(255,255,255,.09);
+      transform:translateY(-1px);
+    }
+    .track.active{
+      background:linear-gradient(135deg, rgba(40,214,255,.14), rgba(123,44,255,.12), rgba(255,79,216,.10));
+      border-color:rgba(255,255,255,.14);
+    }
+    .trackLeft{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+    .badge{
+      width:38px; height:38px;
+      border-radius:14px;
+      display:grid; place-items:center;
+      font-weight:800;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(0,0,0,.25);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+      flex:0 0 auto;
+    }
+    .trackText{min-width:0}
+    .trackName{
+      margin:0;
+      font-size:13px;
+      font-weight:700;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .trackMeta{
+      margin:2px 0 0;
+      font-size:11px;
+      color:var(--muted);
+    }
+    .trackRight{
+      color:rgba(255,255,255,.70);
+      font-size:12px;
+      white-space:nowrap;
+    }
+
+    /* Player */
+    .player{
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .now{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+    .cover{
+      width:54px; height:54px;
+      border-radius:18px;
+      background:linear-gradient(135deg, rgba(40,214,255,.22), rgba(123,44,255,.22), rgba(255,79,216,.18));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: 0 20px 50px rgba(0,0,0,.45);
+      position:relative;
+      overflow:hidden;
+    }
+    .cover:before{
+      content:"";
+      position:absolute; inset:-30%;
+      background: conic-gradient(from 90deg, rgba(40,214,255,.85), rgba(123,44,255,.75), rgba(255,79,216,.75), rgba(255,184,74,.55), rgba(40,214,255,.85));
+      filter: blur(12px);
+      opacity:.7;
+      animation: spin 7s linear infinite;
+    }
+    .cover:after{
+      content:"♪";
+      position:absolute;
+      inset:0;
+      display:grid; place-items:center;
+      font-size:18px;
+      font-weight:800;
+      text-shadow:0 10px 30px rgba(0,0,0,.55);
+    }
+    .nowText{min-width:0}
+    .nowTitle{
+      margin:0;
+      font-weight:800;
+      font-size:14px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .nowSub{
+      margin:2px 0 0;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .controls{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:12px;
+      margin-top:4px;
+    }
+    .iconBtn{
+      width:44px; height:44px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.05);
+      color:white;
+      cursor:pointer;
+      display:grid;
+      place-items:center;
+      transition:.15s ease;
+      user-select:none;
+    }
+    .iconBtn:hover{transform:translateY(-2px); background:rgba(255,255,255,.07)}
+    .iconBtn.primary{
+      width:52px;height:52px;
+      border-radius:18px;
+      border:none;
+      background: linear-gradient(135deg, rgba(40,214,255,.95), rgba(123,44,255,.95), rgba(255,79,216,.95));
+      box-shadow: 0 18px 55px rgba(123,44,255,.22);
+    }
+
+    .bar{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .time{
+      font-size:11px;
+      color:rgba(255,255,255,.72);
+      width:42px;
+      text-align:center;
+    }
+    input[type="range"]{
+      width:100%;
+      -webkit-appearance:none;
+      height:10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      outline:none;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    input[type="range"]::-webkit-slider-thumb{
+      -webkit-appearance:none;
+      width:18px;height:18px;border-radius:50%;
+      background: white;
+      border:2px solid rgba(0,0,0,.35);
+      box-shadow:0 10px 25px rgba(0,0,0,.55);
+      cursor:pointer;
+    }
+
+    .volRow{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top:2px;
+    }
+    .volLabel{
+      font-size:12px;
+      color:rgba(255,255,255,.75);
+      width:46px;
+    }
+
+    /* Footer fixed */
+    .footerHint{
+      position:fixed;
+      left:0; right:0; bottom:0;
+      z-index:3;
+      padding:14px 14px 16px;
+      background:linear-gradient(180deg, rgba(7,10,18,0), rgba(7,10,18,.65), rgba(7,10,18,.92));
+      backdrop-filter: blur(6px);
+    }
+    .footerHintInner{
+      max-width:980px;
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+    }
+    .footerHintInner span{
+      font-size:12px;
+      color:rgba(255,255,255,.78);
+    }
+    .link{
+      color:white;
+      text-decoration:none;
+      font-weight:800;
+      background:linear-gradient(135deg, rgba(40,214,255,.8), rgba(255,79,216,.8));
+      -webkit-background-clip:text;
+      background-clip:text;
+      -webkit-text-fill-color:transparent;
+    }
+  </style>
+</head>
+<body>
+  <div class="spark"></div>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-label="FlipStream"></div>
+        <div>
+          <h1>FlipStream</h1>
+          <p>Luxury streaming • Your music, your platform</p>
+        </div>
+      </div>
+      <div class="pill"><span class="dot"></span> LIVE • Local Hosting</div>
+    </div>
+
+    <section class="hero">
+      <div class="heroInner">
+        <div>
+          <h2 class="heroTitle">Your music library is now streaming.</h2>
+          <p class="heroSub">
+            
+          </p>
+          <div class="ctaRow">
+            <button class="btn" id="playAllBtn">Play from Top</button>
+            <button class="btn secondary" id="shuffleBtn">Shuffle</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <!-- Playlist -->
+      <div class="card">
+        <div class="cardHead">
+          <h3>🔥 Playlist</h3>
+          <div class="small" id="trackCount">0 tracks</div>
+        </div>
+        <div class="list" id="playlist"></div>
+      </div>
+
+      <!-- Player -->
+      <div class="card">
+        <div class="cardHead">
+          <h3>🎧 Player</h3>
+          <div class="small" id="statusText">Ready</div>
+        </div>
+        <div class="player">
+          <div class="now">
+            <div class="cover"></div>
+            <div class="nowText">
+              <p class="nowTitle" id="nowTitle">Select a song</p>
+              <p class="nowSub" id="nowSub">FlipStream Player</p>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="iconBtn" id="prevBtn" title="Previous">⟨⟨</button>
+            <button class="iconBtn primary" id="playBtn" title="Play / Pause">▶</button>
+            <button class="iconBtn" id="nextBtn" title="Next">⟩⟩</button>
+          </div>
+
+          <div class="bar">
+            <div class="time" id="curTime">0:00</div>
+            <input type="range" id="seek" min="0" max="100" value="0" />
+            <div class="time" id="durTime">0:00</div>
+          </div>
+
+          <div class="volRow">
+            <div class="volLabel">Vol</div>
+            <input type="range" id="vol" min="0" max="100" value="80" />
+          </div>
+
+          <audio id="audio" preload="metadata"></audio>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footerHint">
+    <div class="footerHintInner">
+      <span></span>
+      <a class="link" href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top</a>
+    </div>
+  </div>
+
+  <script>
+    // ✅ Track list (filenames must match EXACTLY)
+    // If "&" gives issues, rename file to BubblesAndBoxes.mp3 and update below.
+    const tracks = [
+      { title: "Burn The House Down", file: "BurnTheHouseDown.mp3" },
+      { title: "Be The Light", file: "BeTheLight.mp3" },
+      { title: "Bubbles & Boxes", file: "Bubbles&Boxes.mp3" },
+      { title: "Floating", file: "Floating.mp3" },
+      { title: "Stronger", file: "Stronger.mp3" },
+      { title: "The Killing Chair", file: "TheKillingChair.mp3" }
+    ];
+
+    const playlistEl = document.getElementById("playlist");
+    const trackCount = document.getElementById("trackCount");
+    const nowTitle = document.getElementById("nowTitle");
+    const nowSub = document.getElementById("nowSub");
+    const statusText = document.getElementById("statusText");
+
+    const audio = document.getElementById("audio");
+    const playBtn = document.getElementById("playBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const seek = document.getElementById("seek");
+    const curTime = document.getElementById("curTime");
+    const durTime = document.getElementById("durTime");
+    const vol = document.getElementById("vol");
+
+    const playAllBtn = document.getElementById("playAllBtn");
+    const shuffleBtn = document.getElementById("shuffleBtn");
+
+    let currentIndex = 0;
+    let isPlaying = false;
+
+    trackCount.textContent = `${tracks.length} tracks`;
+
+    function formatTime(sec){
+      if(!isFinite(sec)) return "0:00";
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s.toString().padStart(2,"0")}`;
+    }
+
+    function renderPlaylist(){
+      playlistEl.innerHTML = "";
+      tracks.forEach((t, i) => {
+        const row = document.createElement("div");
+        row.className = "track" + (i === currentIndex ? " active" : "");
+        row.onclick = () => loadTrack(i, true);
+
+        const left = document.createElement("div");
+        left.className = "trackLeft";
+
+        const badge = document.createElement("div");
+        badge.className = "badge";
+        badge.textContent = (i+1);
+
+        const text = document.createElement("div");
+        text.className = "trackText";
+
+        const name = document.createElement("p");
+        name.className = "trackName";
+        name.textContent = t.title;
+
+        const meta = document.createElement("p");
+        meta.className = "trackMeta";
+        meta.textContent = t.file;
+
+        text.appendChild(name);
+        text.appendChild(meta);
+
+        left.appendChild(badge);
+        left.appendChild(text);
+
+        const right = document.createElement("div");
+        right.className = "trackRight";
+        right.textContent = (i === currentIndex && isPlaying) ? "Playing" : "Tap";
+
+        row.appendChild(left);
+        row.appendChild(right);
+        playlistEl.appendChild(row);
+      });
+    }
+
+    function loadTrack(index, autoplay=false){
+      currentIndex = index;
+      const t = tracks[currentIndex];
+      audio.src = t.file;
+      nowTitle.textContent = t.title;
+      nowSub.textContent = "FlipStream • Local MP3";
+      statusText.textContent = "Loading…";
+      seek.value = 0;
+      curTime.textContent = "0:00";
+      durTime.textContent = "0:00";
+      renderPlaylist();
+
+      audio.load();
+
+      if(autoplay){
+        audio.play().then(() => {
+          isPlaying = true;
+          playBtn.textContent = "⏸";
+          statusText.textContent = "Playing";
+          renderPlaylist();
+        }).catch(() => {
+          statusText.textContent = "Tap play to start";
+        });
+      } else {
+        statusText.textContent = "Ready";
+      }
+    }
+
+    function playPause(){
+      if(!audio.src){
+        loadTrack(currentIndex, true);
+        return;
+      }
+      if(isPlaying){
+        audio.pause();
+        isPlaying = false;
+        playBtn.textContent = "▶";
+        statusText.textContent = "Paused";
+      }else{
+        audio.play().then(() => {
+          isPlaying = true;
+          playBtn.textContent = "⏸";
+          statusText.textContent = "Playing";
+        }).catch(() => {
+          statusText.textContent = "Autoplay blocked — press play";
+        });
+      }
+      renderPlaylist();
+    }
+
+    function next(){
+      currentIndex = (currentIndex + 1) % tracks.length;
+      loadTrack(currentIndex, true);
+    }
+    function prev(){
+      currentIndex = (currentIndex - 1 + tracks.length) % tracks.length;
+      loadTrack(currentIndex, true);
+    }
+
+    // Seek updates
+    audio.addEventListener("timeupdate", () => {
+      if(!isFinite(audio.duration)) return;
+      const pct = (audio.currentTime / audio.duration) * 100;
+      seek.value = pct || 0;
+      curTime.textContent = formatTime(audio.currentTime);
+      durTime.textContent = formatTime(audio.duration);
+    });
+
+    seek.addEventListener("input", () => {
+      if(!isFinite(audio.duration)) return;
+      const pct = Number(seek.value) / 100;
+      audio.currentTime = pct * audio.duration;
+    });
+
+    // Volume
+    vol.addEventListener("input", () => {
+      audio.volume = Number(vol.value) / 100;
+    });
+    audio.volume = Number(vol.value)/100;
+
+    // Auto next when song ends
+    audio.addEventListener("ended", () => next());
+
+    // Buttons
+    playBtn.addEventListener("click", playPause);
+    nextBtn.addEventListener("click", next);
+    prevBtn.addEventListener("click", prev);
+
+    playAllBtn.addEventListener("click", () => loadTrack(0, true));
+
+    shuffleBtn.addEventListener("click", () => {
+      // shuffle tracks array (keeps current playing if active)
+      for (let i = tracks.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [tracks[i], tracks[j]] = [tracks[j], tracks[i]];
+      }
+      currentIndex = 0;
+      renderPlaylist();
+      statusText.textContent = "Shuffled";
+    });
+
+    // Initial render
+    renderPlaylist();
+    statusText.textContent = "Ready";
+  </script>
+</body>
+</html>

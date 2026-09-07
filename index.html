@@ -1,0 +1,2638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>FlipStream • Music Streaming</title>
+
+<meta name="theme-color" content="#08090d">
+<meta name="description" content="FlipStream Music Streaming">
+
+<style>
+
+/* =========================================================
+   FLIPSTREAM
+   LIGHTWEIGHT STREAMING APP DESIGN
+   ========================================================= */
+
+:root{
+    --bg:#08090d;
+    --bg2:#0e1017;
+    --card:#11141c;
+    --card2:#151925;
+
+    --text:#ffffff;
+    --muted:#8d94a7;
+
+    --blue:#28d6ff;
+    --purple:#7b2cff;
+    --pink:#ff4fd8;
+    --orange:#ffb84a;
+
+    --border:rgba(255,255,255,.08);
+
+    --radius:20px;
+}
+
+/* RESET */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:
+        radial-gradient(circle at 15% 0%, rgba(40,214,255,.08), transparent 30%),
+        radial-gradient(circle at 90% 15%, rgba(123,44,255,.08), transparent 30%),
+        var(--bg);
+
+    color:var(--text);
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    min-height:100vh;
+
+    padding-bottom:120px;
+
+    overflow-x:hidden;
+}
+
+/* =========================================================
+   TOP HEADER
+   ========================================================= */
+
+.topbar{
+    width:100%;
+    padding:18px 18px 12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    position:sticky;
+    top:0;
+
+    z-index:100;
+
+    background:rgba(8,9,13,.94);
+    border-bottom:1px solid rgba(255,255,255,.04);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.brandIcon{
+    width:38px;
+    height:38px;
+
+    border-radius:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(135deg,
+        var(--blue),
+        var(--purple),
+        var(--pink));
+
+    color:#fff;
+
+    font-size:18px;
+    font-weight:900;
+
+    box-shadow:
+        0 5px 20px rgba(40,214,255,.15);
+}
+
+.brandText{
+    font-size:19px;
+    font-weight:900;
+    letter-spacing:-.5px;
+}
+
+.brandText span{
+    color:var(--blue);
+}
+
+.headerButton{
+    width:40px;
+    height:40px;
+
+    border:1px solid var(--border);
+
+    background:#11141b;
+
+    color:white;
+
+    border-radius:12px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:18px;
+
+    cursor:pointer;
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.container{
+    width:100%;
+    max-width:1050px;
+
+    margin:auto;
+
+    padding:15px;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero{
+    margin-top:8px;
+
+    min-height:230px;
+
+    border-radius:26px;
+
+    padding:25px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            135deg,
+            #131924,
+            #0c0e14 65%
+        );
+
+    border:1px solid var(--border);
+}
+
+.hero:after{
+    content:"";
+
+    position:absolute;
+
+    width:220px;
+    height:220px;
+
+    right:-80px;
+    top:-80px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue),
+            var(--purple)
+        );
+
+    border-radius:50%;
+
+    opacity:.16;
+}
+
+.heroContent{
+    position:relative;
+    z-index:2;
+
+    max-width:650px;
+}
+
+.heroSmall{
+    color:var(--blue);
+
+    font-size:12px;
+
+    font-weight:800;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    margin-bottom:10px;
+}
+
+.hero h1{
+    font-size:clamp(30px,7vw,58px);
+
+    line-height:1;
+
+    letter-spacing:-2px;
+
+    margin-bottom:13px;
+}
+
+.hero h1 span{
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--purple),
+            var(--pink)
+        );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+.hero p{
+    color:var(--muted);
+
+    line-height:1.5;
+
+    font-size:14px;
+
+    max-width:500px;
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.searchBox{
+    margin-top:18px;
+
+    position:relative;
+}
+
+.searchBox input{
+    width:100%;
+
+    height:52px;
+
+    border-radius:15px;
+
+    border:1px solid var(--border);
+
+    outline:none;
+
+    background:#11141b;
+
+    color:white;
+
+    padding:0 17px 0 47px;
+
+    font-size:15px;
+
+    transition:.2s;
+}
+
+.searchBox input:focus{
+    border-color:rgba(40,214,255,.5);
+
+    box-shadow:
+        0 0 0 3px rgba(40,214,255,.06);
+}
+
+.searchIcon{
+    position:absolute;
+
+    left:17px;
+    top:50%;
+
+    transform:translateY(-50%);
+
+    color:var(--muted);
+
+    font-size:18px;
+}
+
+/* =========================================================
+   SECTION HEADERS
+   ========================================================= */
+
+.section{
+    margin-top:28px;
+}
+
+.sectionHeader{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    margin-bottom:13px;
+}
+
+.sectionHeader h2{
+    font-size:20px;
+
+    letter-spacing:-.5px;
+}
+
+.sectionHeader span{
+    color:var(--muted);
+
+    font-size:12px;
+}
+
+/* =========================================================
+   GENRE FILTERS
+   ========================================================= */
+
+.genreBar{
+    display:flex;
+
+    gap:9px;
+
+    overflow-x:auto;
+
+    padding-bottom:3px;
+
+    scrollbar-width:none;
+}
+
+.genreBar::-webkit-scrollbar{
+    display:none;
+}
+
+.genreBtn{
+    flex:none;
+
+    padding:10px 15px;
+
+    border-radius:999px;
+
+    background:#11141b;
+
+    color:#aeb4c5;
+
+    border:1px solid var(--border);
+
+    cursor:pointer;
+
+    font-size:13px;
+
+    font-weight:700;
+}
+
+.genreBtn.active{
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--purple)
+        );
+
+    color:white;
+
+    border-color:transparent;
+}
+
+/* =========================================================
+   FEATURED TRACK
+   ========================================================= */
+
+.featured{
+    display:grid;
+
+    grid-template-columns:140px 1fr;
+
+    gap:17px;
+
+    padding:15px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #151925,
+            #10131b
+        );
+
+    border:1px solid var(--border);
+
+    border-radius:22px;
+
+    cursor:pointer;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease;
+}
+
+.featured:active{
+    transform:scale(.985);
+}
+
+.featuredCover{
+    width:140px;
+    height:140px;
+
+    border-radius:17px;
+
+    object-fit:cover;
+
+    background:#202431;
+}
+
+.featuredInfo{
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    min-width:0;
+}
+
+.featuredLabel{
+    color:var(--blue);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    letter-spacing:1.5px;
+
+    margin-bottom:7px;
+}
+
+.featuredTitle{
+    font-size:22px;
+
+    font-weight:900;
+
+    line-height:1.1;
+
+    margin-bottom:6px;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+.featuredArtist{
+    color:var(--muted);
+
+    font-size:13px;
+
+    margin-bottom:14px;
+}
+
+.featuredPlay{
+    width:43px;
+    height:43px;
+
+    border-radius:50%;
+
+    border:none;
+
+    background:white;
+
+    color:#08090d;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:17px;
+}
+
+/* =========================================================
+   TRACK LIST
+   ========================================================= */
+
+.trackList{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+}
+
+.track{
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:9px;
+
+    border-radius:16px;
+
+    background:#10131a;
+
+    border:1px solid transparent;
+
+    cursor:pointer;
+
+    transition:
+        background .15s ease,
+        transform .15s ease,
+        border-color .15s ease;
+}
+
+.track:active{
+    transform:scale(.99);
+}
+
+.track.active{
+    background:#151a24;
+
+    border-color:
+        rgba(40,214,255,.25);
+}
+
+.cover{
+    width:58px;
+    height:58px;
+
+    border-radius:12px;
+
+    object-fit:cover;
+
+    flex:none;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1c2430,
+            #0d0f15
+        );
+}
+
+.trackInfo{
+    min-width:0;
+
+    flex:1;
+}
+
+.trackTitle{
+    font-size:14px;
+
+    font-weight:800;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    margin-bottom:5px;
+}
+
+.trackArtist{
+    color:var(--muted);
+
+    font-size:12px;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+.trackGenre{
+    color:#697084;
+
+    font-size:10px;
+
+    margin-top:4px;
+}
+
+.trackPlay{
+    width:38px;
+    height:38px;
+
+    flex:none;
+
+    border-radius:50%;
+
+    background:#181c25;
+
+    color:white;
+
+    border:1px solid var(--border);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:14px;
+}
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty{
+    text-align:center;
+
+    padding:45px 20px;
+
+    color:var(--muted);
+
+    display:none;
+}
+
+/* =========================================================
+   PLAYER PANEL
+   ========================================================= */
+
+.playerPanel{
+    position:fixed;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    z-index:200;
+
+    background:#0d1016;
+
+    border-top:1px solid rgba(255,255,255,.09);
+
+    box-shadow:
+        0 -10px 35px rgba(0,0,0,.35);
+}
+
+.playerInner{
+    max-width:1050px;
+
+    margin:auto;
+
+    padding:10px 14px;
+
+    display:grid;
+
+    grid-template-columns:1fr auto;
+
+    gap:12px;
+
+    align-items:center;
+}
+
+/* =========================================================
+   MINI PLAYER
+   ========================================================= */
+
+.miniInfo{
+    display:flex;
+
+    align-items:center;
+
+    gap:11px;
+
+    min-width:0;
+
+    cursor:pointer;
+}
+
+.miniCover{
+    width:50px;
+    height:50px;
+
+    border-radius:11px;
+
+    object-fit:cover;
+
+    background:#191d27;
+
+    flex:none;
+}
+
+.miniText{
+    min-width:0;
+}
+
+.miniTitle{
+    font-size:13px;
+
+    font-weight:800;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+}
+
+.miniArtist{
+    font-size:11px;
+
+    color:var(--muted);
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    margin-top:3px;
+}
+
+.playerControls{
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+}
+
+.control{
+    width:39px;
+    height:39px;
+
+    border-radius:50%;
+
+    border:1px solid var(--border);
+
+    background:#151922;
+
+    color:white;
+
+    cursor:pointer;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:14px;
+}
+
+.control.main{
+    width:46px;
+    height:46px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue),
+            var(--purple)
+        );
+
+    border:none;
+
+    font-size:16px;
+}
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+.progressArea{
+    position:absolute;
+
+    top:-3px;
+
+    left:0;
+    right:0;
+
+    height:3px;
+
+    background:#202530;
+
+    cursor:pointer;
+}
+
+.progressFill{
+    width:0%;
+
+    height:100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--blue),
+            var(--purple),
+            var(--pink)
+        );
+}
+
+/* =========================================================
+   FULL PLAYER
+   ========================================================= */
+
+.fullPlayer{
+    position:fixed;
+
+    inset:0;
+
+    z-index:500;
+
+    background:#08090d;
+
+    display:none;
+
+    flex-direction:column;
+
+    padding:18px;
+
+    overflow-y:auto;
+}
+
+.fullPlayer.open{
+    display:flex;
+}
+
+.closePlayer{
+    width:42px;
+    height:42px;
+
+    border-radius:13px;
+
+    background:#141820;
+
+    border:1px solid var(--border);
+
+    color:white;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    margin-bottom:25px;
+}
+
+.fullPlayerContent{
+    width:100%;
+
+    max-width:450px;
+
+    margin:auto;
+
+    text-align:center;
+}
+
+.fullCover{
+    width:min(78vw,350px);
+
+    aspect-ratio:1;
+
+    object-fit:cover;
+
+    border-radius:25px;
+
+    margin:auto;
+
+    display:block;
+
+    background:#151922;
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,.45);
+}
+
+.fullLabel{
+    color:var(--blue);
+
+    font-size:11px;
+
+    letter-spacing:2px;
+
+    font-weight:900;
+
+    margin-top:25px;
+
+    margin-bottom:9px;
+}
+
+.fullTitle{
+    font-size:27px;
+
+    font-weight:900;
+
+    line-height:1.1;
+}
+
+.fullArtist{
+    color:var(--muted);
+
+    margin-top:7px;
+
+    font-size:14px;
+}
+
+.fullProgress{
+    margin-top:25px;
+}
+
+.fullRange{
+    width:100%;
+
+    accent-color:var(--blue);
+
+    cursor:pointer;
+}
+
+.timeRow{
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#747b8e;
+
+    font-size:11px;
+
+    margin-top:5px;
+}
+
+.fullControls{
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:18px;
+
+    margin-top:25px;
+}
+
+.fullControl{
+    width:50px;
+    height:50px;
+
+    border-radius:50%;
+
+    border:1px solid var(--border);
+
+    background:#151922;
+
+    color:white;
+
+    font-size:17px;
+
+    cursor:pointer;
+}
+
+.fullControl.main{
+    width:65px;
+    height:65px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--blue),
+            var(--purple)
+        );
+
+    border:none;
+}
+
+/* =========================================================
+   DESKTOP
+   ========================================================= */
+
+@media(min-width:700px){
+
+    .container{
+        padding:25px;
+    }
+
+    .trackList{
+        display:grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0,1fr));
+
+        gap:10px;
+    }
+
+    .featured{
+        grid-template-columns:180px 1fr;
+    }
+
+    .featuredCover{
+        width:180px;
+        height:180px;
+    }
+
+}
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media(max-width:390px){
+
+    .hero{
+        padding:21px;
+    }
+
+    .hero h1{
+        font-size:31px;
+    }
+
+    .featured{
+        grid-template-columns:105px 1fr;
+        gap:12px;
+    }
+
+    .featuredCover{
+        width:105px;
+        height:105px;
+    }
+
+    .featuredTitle{
+        font-size:17px;
+    }
+
+    .featuredArtist{
+        margin-bottom:8px;
+    }
+
+    .playerInner{
+        padding:8px 10px;
+    }
+
+    .control{
+        width:35px;
+        height:35px;
+    }
+
+    .control.main{
+        width:42px;
+        height:42px;
+    }
+
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *{
+        scroll-behavior:auto !important;
+        transition:none !important;
+        animation:none !important;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =======================================================
+     HEADER
+     ======================================================= -->
+
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brandIcon">
+            ↗
+        </div>
+
+        <div class="brandText">
+            Flip<span>Stream</span>
+        </div>
+
+    </div>
+
+    <button
+        class="headerButton"
+        onclick="scrollToLibrary()"
+        aria-label="Library">
+
+        ♪
+
+    </button>
+
+</header>
+
+
+<main class="container">
+
+<!-- =======================================================
+     HERO
+     ======================================================= -->
+
+<section class="hero">
+
+    <div class="heroContent">
+
+        <div class="heroSmall">
+            One Vision 
+        </div>
+
+        <h1>
+            One Platform .<br>
+            <span>One Community </span>
+        </h1>
+
+        <p>
+            Discover independent music, explore different sounds
+            and keep your favourite tracks playing.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     SEARCH
+     ======================================================= -->
+
+<div class="searchBox">
+
+    <div class="searchIcon">
+        ⌕
+    </div>
+
+    <input
+        id="searchInput"
+        type="search"
+        placeholder="Search songs, artists or genres..."
+        autocomplete="off">
+
+</div>
+
+
+<!-- =======================================================
+     GENRES
+     ======================================================= -->
+
+<section class="section">
+
+    <div class="sectionHeader">
+
+        <h2>Explore</h2>
+
+        <span id="trackCount">
+            16 tracks
+        </span>
+
+    </div>
+
+    <div
+        class="genreBar"
+        id="genreBar">
+
+        <button
+            class="genreBtn active"
+            data-genre="All">
+
+            All
+
+        </button>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     FEATURED
+     ======================================================= -->
+
+<section class="section">
+
+    <div class="sectionHeader">
+
+        <h2>Featured</h2>
+
+        <span>Listen now</span>
+
+    </div>
+
+    <div
+        class="featured"
+        id="featured">
+
+        <img
+            id="featuredCover"
+            class="featuredCover"
+            loading="eager"
+            alt="Featured cover">
+
+        <div class="featuredInfo">
+
+            <div class="featuredLabel">
+                FEATURED TRACK
+            </div>
+
+            <div
+                class="featuredTitle"
+                id="featuredTitle">
+            </div>
+
+            <div
+                class="featuredArtist"
+                id="featuredArtist">
+            </div>
+
+            <button
+                class="featuredPlay"
+                id="featuredPlay">
+
+                ▶
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     LIBRARY
+     ======================================================= -->
+
+<section
+    class="section"
+    id="library">
+
+    <div class="sectionHeader">
+
+        <h2>Music Library</h2>
+
+        <span>All tracks</span>
+
+    </div>
+
+    <div
+        class="trackList"
+        id="trackList">
+    </div>
+
+    <div
+        class="empty"
+        id="emptyState">
+
+        No music found.
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =======================================================
+     AUDIO
+     ======================================================= -->
+
+<audio
+    id="audio"
+    preload="none"
+    playsinline>
+</audio>
+
+
+<!-- =======================================================
+     FIXED MINI PLAYER
+     ======================================================= -->
+
+<div class="playerPanel">
+
+    <div
+        class="progressArea"
+        id="miniProgressArea">
+
+        <div
+            class="progressFill"
+            id="progressFill">
+        </div>
+
+    </div>
+
+    <div class="playerInner">
+
+        <div
+            class="miniInfo"
+            id="miniInfo">
+
+            <img
+                id="miniCover"
+                class="miniCover"
+                alt="Current track">
+
+            <div class="miniText">
+
+                <div
+                    id="miniTitle"
+                    class="miniTitle">
+                    Select a song
+                </div>
+
+                <div
+                    id="miniArtist"
+                    class="miniArtist">
+                    FlipStream
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="playerControls">
+
+            <button
+                class="control"
+                id="prevBtn"
+                aria-label="Previous">
+
+                ‹‹
+
+            </button>
+
+            <button
+                class="control main"
+                id="playBtn"
+                aria-label="Play">
+
+                ▶
+
+            </button>
+
+            <button
+                class="control"
+                id="nextBtn"
+                aria-label="Next">
+
+                ››
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =======================================================
+     FULL PLAYER
+     ======================================================= -->
+
+<div
+    class="fullPlayer"
+    id="fullPlayer">
+
+    <button
+        class="closePlayer"
+        id="closePlayer">
+
+        ×
+
+    </button>
+
+
+    <div class="fullPlayerContent">
+
+        <img
+            id="fullCover"
+            class="fullCover"
+            alt="Album artwork">
+
+
+        <div class="fullLabel">
+            NOW PLAYING
+        </div>
+
+
+        <div
+            id="fullTitle"
+            class="fullTitle">
+        </div>
+
+
+        <div
+            id="fullArtist"
+            class="fullArtist">
+        </div>
+
+
+        <div class="fullProgress">
+
+            <input
+                id="fullRange"
+                class="fullRange"
+                type="range"
+                min="0"
+                max="100"
+                value="0">
+
+            <div class="timeRow">
+
+                <span id="currentTime">
+                    0:00
+                </span>
+
+                <span id="duration">
+                    0:00
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="fullControls">
+
+            <button
+                class="fullControl"
+                id="shuffleBtn">
+
+                🔀
+
+            </button>
+
+            <button
+                class="fullControl"
+                id="fullPrev">
+
+                ‹‹
+
+            </button>
+
+            <button
+                class="fullControl main"
+                id="fullPlay">
+
+                ▶
+
+            </button>
+
+            <button
+                class="fullControl"
+                id="fullNext">
+
+                ››
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   FLIPSTREAM MUSIC LIBRARY
+   ========================================================= */
+
+const tracks = [
+
+    {
+        title:"Burn The House Down",
+        file:"BurnTheHouseDown.mp3",
+        genre:"Country",
+        artist:"TNOTD Giftography",
+        cover:""
+    },
+
+    {
+        title:"Be The Light",
+        file:"BeTheLight.mp3",
+        genre:"Country",
+        artist:"Dawn Melanie",
+        cover:"IMG-20260110-WA0004(3).jpg"
+    },
+
+    {
+        title:"Bubbles & Boxes",
+        file:"BubblesAndBoxes.mp3",
+        genre:"Country",
+        artist:"TNOTD Giftography",
+        cover:"Bubbles & Boxes.jpg"
+    },
+
+    {
+        title:"Floating",
+        file:"Floating.mp3",
+        genre:"Country",
+        artist:"TNOTD Giftography",
+        cover:"5.Bubbles & Boxes.jpg"
+    },
+
+    {
+        title:"Stronger",
+        file:"Stronger.mp3",
+        genre:"Country",
+        artist:"TNOTD Giftography",
+        cover:"3. Stronger.jpg"
+    },
+
+    {
+        title:"The Killing Chair",
+        file:"TheKillingChair.mp3",
+        genre:"Country",
+        artist:"TNOTD Giftography",
+        cover:"1. The Killing Chair.jpg"
+    },
+
+    {
+        title:"New Level",
+        file:"AUD-20260822-WA0007.mp3",
+        genre:"Hip Hop",
+        artist:"FlipStream Artist",
+        cover:"https://i.postimg.cc/5tJb9B6L/IMG-20251220-WA0017.jpg"
+    },
+
+    {
+        title:"Drop Culture - Rollercoaster",
+        file:"Drop Culture - Rollercoaster.mp3",
+        genre:"Rock",
+        artist:"Drop Culture",
+        cover:"motion_photo_473262697182566079.jpg"
+    },
+
+    {
+        title:"FAR AWAY",
+        file:"FAR_AWAY_PATO_N_PROPHESY.mp3",
+        genre:"Hip Hop",
+        artist:"PATO N PROPHESY",
+        cover:"IMG-20260807-WA0012.jpg"
+    },
+
+    {
+        title:"Rap Sage Intro",
+        file:"AUD-20241121-WA0003.mp3",
+        genre:"Hip Hop",
+        artist:"Siphogreatbeast Ft Seth Lewis and Bafana",
+        cover:"FB_IMG_1788062473118.jpg"
+    },
+
+    {
+        title:"Pace",
+        file:"Pace-prodbymsfit.mp3",
+        genre:"Hip Hop",
+        artist:"uSOS",
+        cover:"IMG-20260807-WA0029.jpg"
+    },
+
+    {
+        title:"Mastering the art",
+        file:"AUD-20260830-WA0003.mp3",
+        genre:"Hip Hop",
+        artist:"Blits Illusion",
+        cover:"IMG-20260808-WA0032.jpg"
+    },
+
+    {
+        title:"One Day - OG Cocovula Magalobhe - Mpophoma & Washington",
+        file:"One_day_-_OG Cocovula Magalobhe_-_Mpophoma_&_Washington_-_by iLL Sick .m4a",
+        genre:"Hip Hop",
+        artist:"iLL Sick",
+        cover:"IMG-20260809-WA0051.jpg"
+    },
+
+    {
+        title:"No fear",
+        file:"AUD-20260828-WA0004.mp3",
+        genre:"Hip Hop",
+        artist:"Lyrical Chatta ft chivalo",
+        cover:"IMG-20260727-WA0010.jpg"
+    },
+
+    {
+        title:"Sinegugu",
+        file:"Sinegugu [Q_JzxWKS3F4].mp3",
+        genre:"",
+        artist:"Many Moore",
+        cover:"IMG-20260805-WA0019.jpg"
+    },
+
+    {
+        title:"Flower in the Winter",
+        file:"flower_in_the_winter_mp3_74493.mp3",
+        genre:"Alt Folk",
+        artist:"Shirley Callaghan",
+        cover:"https://i.postimg.cc/cLqdMCxh/ab67616d00001e02767522194c9e4d83fca7b973.jpg"
+    }
+
+];
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+
+const audio = document.getElementById("audio");
+
+const trackList =
+    document.getElementById("trackList");
+
+const genreBar =
+    document.getElementById("genreBar");
+
+const searchInput =
+    document.getElementById("searchInput");
+
+const emptyState =
+    document.getElementById("emptyState");
+
+const trackCount =
+    document.getElementById("trackCount");
+
+const playBtn =
+    document.getElementById("playBtn");
+
+const prevBtn =
+    document.getElementById("prevBtn");
+
+const nextBtn =
+    document.getElementById("nextBtn");
+
+const miniCover =
+    document.getElementById("miniCover");
+
+const miniTitle =
+    document.getElementById("miniTitle");
+
+const miniArtist =
+    document.getElementById("miniArtist");
+
+const miniInfo =
+    document.getElementById("miniInfo");
+
+const progressFill =
+    document.getElementById("progressFill");
+
+const miniProgressArea =
+    document.getElementById("miniProgressArea");
+
+const fullPlayer =
+    document.getElementById("fullPlayer");
+
+const closePlayer =
+    document.getElementById("closePlayer");
+
+const fullCover =
+    document.getElementById("fullCover");
+
+const fullTitle =
+    document.getElementById("fullTitle");
+
+const fullArtist =
+    document.getElementById("fullArtist");
+
+const fullPlay =
+    document.getElementById("fullPlay");
+
+const fullPrev =
+    document.getElementById("fullPrev");
+
+const fullNext =
+    document.getElementById("fullNext");
+
+const shuffleBtn =
+    document.getElementById("shuffleBtn");
+
+const fullRange =
+    document.getElementById("fullRange");
+
+const currentTime =
+    document.getElementById("currentTime");
+
+const duration =
+    document.getElementById("duration");
+
+const featured =
+    document.getElementById("featured");
+
+const featuredCover =
+    document.getElementById("featuredCover");
+
+const featuredTitle =
+    document.getElementById("featuredTitle");
+
+const featuredArtist =
+    document.getElementById("featuredArtist");
+
+const featuredPlay =
+    document.getElementById("featuredPlay");
+
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let currentIndex = -1;
+
+let currentGenre = "All";
+
+let isShuffle = false;
+
+let filteredTracks = [];
+
+
+/* =========================================================
+   PLACEHOLDER ART
+   ========================================================= */
+
+function placeholderArt(title){
+
+    const letter =
+        title
+            .trim()
+            .charAt(0)
+            .toUpperCase() || "F";
+
+    return "data:image/svg+xml;charset=UTF-8," +
+        encodeURIComponent(`
+
+        <svg xmlns="http://www.w3.org/2000/svg"
+             width="500"
+             height="500">
+
+            <rect width="100%"
+                  height="100%"
+                  fill="#151922"/>
+
+            <circle
+                cx="400"
+                cy="100"
+                r="160"
+                fill="#28d6ff"
+                opacity=".15"/>
+
+            <circle
+                cx="100"
+                cy="420"
+                r="180"
+                fill="#7b2cff"
+                opacity=".15"/>
+
+            <text
+                x="50%"
+                y="54%"
+                dominant-baseline="middle"
+                text-anchor="middle"
+                font-family="Arial"
+                font-size="180"
+                font-weight="900"
+                fill="white">
+
+                ${letter}
+
+            </text>
+
+        </svg>
+
+    `);
+
+}
+
+
+/* =========================================================
+   GET COVER
+   ========================================================= */
+
+function getCover(track){
+
+    return track.cover && track.cover.trim()
+        ? track.cover
+        : placeholderArt(track.title);
+
+}
+
+
+/* =========================================================
+   BUILD GENRES
+   ========================================================= */
+
+function buildGenres(){
+
+    const genres = [
+        ...new Set(
+            tracks
+                .map(track => track.genre)
+                .filter(Boolean)
+        )
+    ];
+
+    genres.forEach(genre => {
+
+        const button =
+            document.createElement("button");
+
+        button.className = "genreBtn";
+
+        button.dataset.genre = genre;
+
+        button.textContent = genre;
+
+        genreBar.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================================
+   FILTER
+   ========================================================= */
+
+function getFilteredTracks(){
+
+    const search =
+        searchInput.value
+            .trim()
+            .toLowerCase();
+
+    return tracks.filter(track => {
+
+        const genreMatch =
+            currentGenre === "All" ||
+            track.genre === currentGenre;
+
+        const searchMatch =
+            !search ||
+            track.title.toLowerCase().includes(search) ||
+            track.artist.toLowerCase().includes(search) ||
+            track.genre.toLowerCase().includes(search);
+
+        return genreMatch && searchMatch;
+
+    });
+
+}
+
+
+/* =========================================================
+   RENDER TRACKS
+   ========================================================= */
+
+function renderTracks(){
+
+    filteredTracks =
+        getFilteredTracks();
+
+    trackList.innerHTML = "";
+
+    trackCount.textContent =
+        `${filteredTracks.length} track${filteredTracks.length === 1 ? "" : "s"}`;
+
+    if(filteredTracks.length === 0){
+
+        emptyState.style.display = "block";
+
+        return;
+
+    }
+
+    emptyState.style.display = "none";
+
+
+    filteredTracks.forEach((track) => {
+
+        const realIndex =
+            tracks.indexOf(track);
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "track" +
+            (realIndex === currentIndex
+                ? " active"
+                : "");
+
+        item.dataset.index =
+            realIndex;
+
+
+        item.innerHTML = `
+
+            <img
+                class="cover"
+                loading="lazy"
+                src="${getCover(track)}"
+                alt="">
+
+
+            <div class="trackInfo">
+
+                <div class="trackTitle">
+                    ${escapeHTML(track.title)}
+                </div>
+
+                <div class="trackArtist">
+                    ${escapeHTML(track.artist)}
+                </div>
+
+                ${
+                    track.genre
+                    ?
+                    `<div class="trackGenre">
+                        ${escapeHTML(track.genre)}
+                    </div>`
+                    :
+                    ""
+                }
+
+            </div>
+
+
+            <button
+                class="trackPlay"
+                aria-label="Play">
+
+                ${
+                    realIndex === currentIndex &&
+                    !audio.paused
+                    ? "Ⅱ"
+                    : "▶"
+                }
+
+            </button>
+
+        `;
+
+
+        trackList.appendChild(item);
+
+    });
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================================================
+   LOAD TRACK
+   ========================================================= */
+
+function loadTrack(index, autoplay = true){
+
+    if(index < 0 || index >= tracks.length){
+        return;
+    }
+
+    currentIndex = index;
+
+    const track =
+        tracks[currentIndex];
+
+
+    audio.pause();
+
+    audio.src = track.file;
+
+    audio.load();
+
+
+    updatePlayer(track);
+
+    renderTracks();
+
+
+    if(autoplay){
+
+        const promise =
+            audio.play();
+
+        if(promise){
+
+            promise.catch(() => {
+                // Browser may require another user gesture.
+            });
+
+        }
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE PLAYER
+   ========================================================= */
+
+function updatePlayer(track){
+
+    const cover =
+        getCover(track);
+
+
+    miniCover.src = cover;
+
+    miniCover.alt =
+        track.title;
+
+
+    miniTitle.textContent =
+        track.title;
+
+    miniArtist.textContent =
+        track.artist;
+
+
+    fullCover.src =
+        cover;
+
+    fullCover.alt =
+        track.title;
+
+
+    fullTitle.textContent =
+        track.title;
+
+    fullArtist.textContent =
+        track.artist;
+
+
+    document.title =
+        `${track.title} • FlipStream`;
+
+}
+
+
+/* =========================================================
+   PLAY / PAUSE
+   ========================================================= */
+
+function togglePlay(){
+
+    if(currentIndex === -1){
+
+        loadTrack(0,true);
+
+        return;
+
+    }
+
+
+    if(audio.paused){
+
+        audio.play();
+
+    }else{
+
+        audio.pause();
+
+    }
+
+}
+
+
+/* =========================================================
+   NEXT
+   ========================================================= */
+
+function nextTrack(){
+
+    if(!tracks.length){
+        return;
+    }
+
+
+    let nextIndex;
+
+
+    if(isShuffle){
+
+        if(tracks.length === 1){
+
+            nextIndex = 0;
+
+        }else{
+
+            do{
+
+                nextIndex =
+                    Math.floor(
+                        Math.random() *
+                        tracks.length
+                    );
+
+            }while(
+                nextIndex === currentIndex
+            );
+
+        }
+
+    }else{
+
+        nextIndex =
+            (currentIndex + 1) %
+            tracks.length;
+
+    }
+
+
+    loadTrack(nextIndex,true);
+
+}
+
+
+/* =========================================================
+   PREVIOUS
+   ========================================================= */
+
+function previousTrack(){
+
+    if(!tracks.length){
+        return;
+    }
+
+
+    if(audio.currentTime > 5){
+
+        audio.currentTime = 0;
+
+        return;
+
+    }
+
+
+    const previousIndex =
+        (currentIndex - 1 + tracks.length) %
+        tracks.length;
+
+
+    loadTrack(previousIndex,true);
+
+}
+
+
+/* =========================================================
+   TIME FORMAT
+   ========================================================= */
+
+function formatTime(seconds){
+
+    if(!Number.isFinite(seconds)){
+        return "0:00";
+    }
+
+    const minutes =
+        Math.floor(seconds / 60);
+
+    const secs =
+        Math.floor(seconds % 60)
+            .toString()
+            .padStart(2,"0");
+
+    return `${minutes}:${secs}`;
+
+}
+
+
+/* =========================================================
+   AUDIO EVENTS
+   ========================================================= */
+
+audio.addEventListener(
+    "play",
+    () => {
+
+        playBtn.textContent = "Ⅱ";
+
+        fullPlay.textContent = "Ⅱ";
+
+        renderTracks();
+
+    }
+);
+
+
+audio.addEventListener(
+    "pause",
+    () => {
+
+        playBtn.textContent = "▶";
+
+        fullPlay.textContent = "▶";
+
+        renderTracks();
+
+    }
+);
+
+
+audio.addEventListener(
+    "timeupdate",
+    () => {
+
+        if(!audio.duration){
+            return;
+        }
+
+
+        const percentage =
+            (audio.currentTime /
+             audio.duration) *
+            100;
+
+
+        progressFill.style.width =
+            `${percentage}%`;
+
+
+        fullRange.value =
+            percentage;
+
+
+        currentTime.textContent =
+            formatTime(audio.currentTime);
+
+    }
+);
+
+
+audio.addEventListener(
+    "loadedmetadata",
+    () => {
+
+        duration.textContent =
+            formatTime(audio.duration);
+
+    }
+);
+
+
+audio.addEventListener(
+    "ended",
+    () => {
+
+        nextTrack();
+
+    }
+);
+
+
+/* =========================================================
+   BUTTON EVENTS
+   ========================================================= */
+
+playBtn.addEventListener(
+    "click",
+    togglePlay
+);
+
+prevBtn.addEventListener(
+    "click",
+    previousTrack
+);
+
+nextBtn.addEventListener(
+    "click",
+    nextTrack
+);
+
+fullPlay.addEventListener(
+    "click",
+    togglePlay
+);
+
+fullPrev.addEventListener(
+    "click",
+    previousTrack
+);
+
+fullNext.addEventListener(
+    "click",
+    nextTrack
+);
+
+
+shuffleBtn.addEventListener(
+    "click",
+    () => {
+
+        isShuffle =
+            !isShuffle;
+
+        shuffleBtn.style.color =
+            isShuffle
+            ? "var(--blue)"
+            : "white";
+
+    }
+);
+
+
+/* =========================================================
+   TRACK CLICK
+   ========================================================= */
+
+trackList.addEventListener(
+    "click",
+    event => {
+
+        const track =
+            event.target.closest(".track");
+
+        if(!track){
+            return;
+        }
+
+        const index =
+            Number(track.dataset.index);
+
+        if(
+            index === currentIndex
+        ){
+
+            togglePlay();
+
+        }else{
+
+            loadTrack(index,true);
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   GENRE CLICK
+   ========================================================= */
+
+genreBar.addEventListener(
+    "click",
+    event => {
+
+        const button =
+            event.target.closest(".genreBtn");
+
+        if(!button){
+            return;
+        }
+
+
+        document
+            .querySelectorAll(".genreBtn")
+            .forEach(btn =>
+                btn.classList.remove("active")
+            );
+
+
+        button.classList.add("active");
+
+
+        currentGenre =
+            button.dataset.genre;
+
+
+        renderTracks();
+
+    }
+);
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+searchInput.addEventListener(
+    "input",
+    renderTracks
+);
+
+
+/* =========================================================
+   MINI PLAYER OPEN
+   ========================================================= */
+
+miniInfo.addEventListener(
+    "click",
+    () => {
+
+        if(currentIndex === -1){
+            return;
+        }
+
+        fullPlayer.classList.add("open");
+
+    }
+);
+
+
+/* =========================================================
+   FEATURED
+   ========================================================= */
+
+featured.addEventListener(
+    "click",
+    () => {
+
+        if(currentIndex !== 0){
+
+            loadTrack(0,true);
+
+        }else{
+
+            togglePlay();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FULL PLAYER CLOSE
+   ========================================================= */
+
+closePlayer.addEventListener(
+    "click",
+    () => {
+
+        fullPlayer.classList.remove("open");
+
+    }
+);
+
+
+/* =========================================================
+   FULL SEEK
+   ========================================================= */
+
+fullRange.addEventListener(
+    "input",
+    () => {
+
+        if(!audio.duration){
+            return;
+        }
+
+
+        audio.currentTime =
+            (fullRange.value / 100) *
+            audio.duration;
+
+    }
+);
+
+
+/* =========================================================
+   MINI SEEK
+   ========================================================= */
+
+miniProgressArea.addEventListener(
+    "click",
+    event => {
+
+        if(!audio.duration){
+            return;
+        }
+
+
+        const rect =
+            miniProgressArea.getBoundingClientRect();
+
+
+        const percentage =
+            (event.clientX - rect.left) /
+            rect.width;
+
+
+        audio.currentTime =
+            percentage *
+            audio.duration;
+
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.code === "Space"){
+
+            const target =
+                event.target.tagName;
+
+            if(
+                target !== "INPUT" &&
+                target !== "TEXTAREA"
+            ){
+
+                event.preventDefault();
+
+                togglePlay();
+
+            }
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   LIBRARY SCROLL
+   ========================================================= */
+
+function scrollToLibrary(){
+
+    document
+        .getElementById("library")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+}
+
+
+/* =========================================================
+   FEATURED DATA
+   ========================================================= */
+
+function setupFeatured(){
+
+    const track =
+        tracks[0];
+
+
+    featuredCover.src =
+        getCover(track);
+
+    featuredCover.alt =
+        track.title;
+
+
+    featuredTitle.textContent =
+        track.title;
+
+
+    featuredArtist.textContent =
+        track.artist;
+
+}
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
+
+buildGenres();
+
+setupFeatured();
+
+renderTracks();
+
+
+/* =========================================================
+   PREVENT EMPTY AUDIO REQUEST
+   ========================================================= */
+
+audio.removeAttribute("src");
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>FlipStream Menu</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+/* HAMBURGER */
+#menuButton {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 10001;
+
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer;
+}
+
+#menuButton span {
+    width: 23px;
+    height: 2px;
+    background: #D4AF37;
+    border-radius: 5px;
+    transition: .3s;
+}
+
+#menuButton.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+#menuButton.active span:nth-child(2) {
+    opacity: 0;
+}
+
+#menuButton.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* TRANSPARENT OVERLAY */
+#menuOverlay {
+    position: fixed;
+    inset: 0;
+    background: transparent !important;
+    visibility: hidden;
+    z-index: 10002;
+}
+
+#menuOverlay.active {
+    visibility: visible;
+}
+
+/* TRANSPARENT DRAWER */
+#menuDrawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    width: min(290px, 82vw);
+    height: 100vh;
+
+    background: transparent !important;
+    border: none !important;
+
+    padding: 85px 22px 25px;
+
+    transform: translateX(100%);
+    transition: transform .3s ease;
+
+    z-index: 10003;
+}
+
+#menuDrawer.active {
+    transform: translateX(0);
+}
+
+/* MENU LINKS */
+#menuDrawer .menuLink {
+    display: block;
+
+    padding: 15px 0;
+    margin-bottom: 12px;
+
+    background: transparent !important;
+    border: none !important;
+
+    color: inherit !important;
+
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#menuDrawer .menuLink:hover {
+    opacity: .75;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HAMBURGER BUTTON -->
+<button
+    id="menuButton"
+    aria-label="Open menu"
+    aria-expanded="false">
+
+    <span></span>
+    <span></span>
+    <span></span>
+
+</button>
+
+
+<!-- TRANSPARENT OVERLAY -->
+<div id="menuOverlay"></div>
+
+
+<!-- MENU DRAWER -->
+<nav id="menuDrawer">
+
+    <a class="menuLink" href="artists.html">
+        Artist Profiles
+    </a>
+
+    <a class="menuLink" href="privacy-policy.html">
+        Privacy Policy
+    </a>
+
+</nav>
+
+
+<script>
+
+const menuButton = document.getElementById("menuButton");
+
+const menuDrawer = document.getElementById("menuDrawer");
+
+const menuOverlay = document.getElementById("menuOverlay");
+
+
+function openMenu() {
+
+    menuButton.classList.add("active");
+
+    menuDrawer.classList.add("active");
+
+    menuOverlay.classList.add("active");
+
+    menuButton.setAttribute("aria-expanded", "true");
+
+}
+
+
+function closeMenu() {
+
+    menuButton.classList.remove("active");
+
+    menuDrawer.classList.remove("active");
+
+    menuOverlay.classList.remove("active");
+
+    menuButton.setAttribute("aria-expanded", "false");
+
+}
+
+
+menuButton.addEventListener("click", () => {
+
+    if (menuDrawer.classList.contains("active")) {
+
+        closeMenu();
+
+    } else {
+
+        openMenu();
+
+    }
+
+});
+
+
+menuOverlay.addEventListener("click", closeMenu);
+
+
+document.addEventListener("keydown", event => {
+
+    if (event.key === "Escape") {
+
+        closeMenu();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>

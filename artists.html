@@ -1,0 +1,3285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flip Stream — Artist Profiles</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#000;
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+    -webkit-user-select:none;
+    user-select:none;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    background:
+        radial-gradient(circle at 50% 0%,rgba(255,255,255,.07),transparent 35%),
+        radial-gradient(circle at 10% 50%,rgba(255,255,255,.025),transparent 30%),
+        radial-gradient(circle at 90% 80%,rgba(255,255,255,.02),transparent 30%);
+    z-index:-1;
+}
+
+/* TOP BAR */
+.topbar{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    height:70px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 7%;
+    background:rgba(0,0,0,.94);
+    border-bottom:1px solid rgba(255,255,255,.1);
+    backdrop-filter:blur(15px);
+}
+
+.brand{
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:4px;
+}
+
+.top-title{
+    font-size:12px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:#aaa;
+}
+
+/* HERO */
+.hero{
+    min-height:580px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:70px 20px 60px;
+    position:relative;
+}
+
+.logo{
+    width:145px;
+    height:145px;
+    object-fit:contain;
+    border-radius:50%;
+    margin-bottom:28px;
+    filter:drop-shadow(0 0 30px rgba(255,255,255,.16));
+}
+
+.hero h1{
+    font-size:clamp(42px,8vw,82px);
+    font-weight:900;
+    letter-spacing:-3px;
+    margin-bottom:12px;
+}
+
+.hero p{
+    max-width:680px;
+    color:#aaa;
+    font-size:15px;
+    line-height:1.8;
+}
+
+.announcement{
+    margin-top:32px;
+    padding:20px 30px;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.035);
+    box-shadow:0 0 35px rgba(255,255,255,.035);
+    border-radius:15px;
+}
+
+.announcement strong{
+    display:block;
+    font-size:16px;
+    letter-spacing:2px;
+    margin-bottom:7px;
+}
+
+.announcement span{
+    color:#999;
+    font-size:12px;
+    letter-spacing:2px;
+}
+
+.enter-btn{
+    margin-top:30px;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:190px;
+    padding:14px 25px;
+    border-radius:30px;
+    border:1px solid rgba(255,255,255,.25);
+    color:#fff;
+    text-decoration:none;
+    font-size:12px;
+    font-weight:bold;
+    letter-spacing:2px;
+    transition:.3s ease;
+    animation:pulse 2.5s infinite;
+}
+
+.enter-btn:hover{
+    background:#fff;
+    color:#000;
+    transform:translateY(-2px);
+}
+
+@keyframes pulse{
+    0%,100%{box-shadow:0 0 0 rgba(255,255,255,0)}
+    50%{box-shadow:0 0 25px rgba(255,255,255,.12)}
+}
+
+/* ARTISTS */
+.section{
+    width:92%;
+    max-width:1250px;
+    margin:0 auto;
+    padding:40px 0 90px;
+}
+
+.section-title{
+    text-align:center;
+    margin-bottom:45px;
+}
+
+.section-title h2{
+    font-size:30px;
+    letter-spacing:2px;
+}
+
+.section-title p{
+    color:#666;
+    font-size:12px;
+    letter-spacing:2px;
+    margin-top:8px;
+    text-transform:uppercase;
+}
+
+.artist-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(310px,1fr));
+    gap:25px;
+}
+
+/* CARD */
+.artist-card{
+    background:linear-gradient(145deg,#111,#050505);
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:22px;
+    padding:28px;
+    position:relative;
+    overflow:hidden;
+    transition:.35s ease;
+    box-shadow:0 15px 50px rgba(0,0,0,.45);
+}
+
+.artist-card::before{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    background:rgba(255,255,255,.035);
+    top:-90px;
+    right:-70px;
+}
+
+.artist-card:hover{
+    transform:translateY(-5px);
+    border-color:rgba(255,255,255,.22);
+    box-shadow:0 20px 65px rgba(0,0,0,.65);
+}
+
+.artist-head{
+    display:flex;
+    align-items:center;
+    gap:17px;
+    margin-bottom:20px;
+}
+
+.artist-img{
+    width:92px;
+    height:92px;
+    min-width:92px;
+    border-radius:50%;
+    object-fit:cover;
+    border:1px solid rgba(255,255,255,.18);
+    background:#111;
+    box-shadow:0 0 25px rgba(255,255,255,.07);
+}
+
+.artist-name{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:.5px;
+}
+
+.artist-genre{
+    color:#999;
+    font-size:10px;
+    letter-spacing:1.5px;
+    margin-top:6px;
+    text-transform:uppercase;
+}
+
+.bio{
+    color:#b8b8b8;
+    font-size:13px;
+    line-height:1.75;
+    margin-bottom:18px;
+    white-space:pre-line;
+}
+
+/* SOCIALS */
+.socials{
+    display:flex;
+    gap:10px;
+    margin-bottom:22px;
+}
+
+.social-btn{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#fff;
+    background:#151515;
+    border:1px solid rgba(255,255,255,.12);
+    transition:.25s;
+}
+
+.social-btn svg{
+    width:18px;
+    height:18px;
+    fill:currentColor;
+}
+
+.social-btn:hover{
+    background:#fff;
+    color:#000;
+    transform:translateY(-2px);
+}
+
+.facebook-end{
+    margin-top:5px;
+}
+
+/* SONGS */
+.songs-title{
+    font-size:10px;
+    letter-spacing:2px;
+    color:#666;
+    text-transform:uppercase;
+    margin-bottom:10px;
+}
+
+.song{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:11px 0;
+    border-top:1px solid rgba(255,255,255,.07);
+}
+
+.play-btn{
+    width:39px;
+    height:39px;
+    min-width:39px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.22);
+    background:#0d0d0d;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    font-size:13px;
+    transition:.25s;
+}
+
+.play-btn:hover{
+    background:#fff;
+    color:#000;
+}
+
+.song-info{
+    min-width:0;
+    flex:1;
+}
+
+.song-name{
+    font-size:13px;
+    font-weight:bold;
+    color:#eee;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.song-artist{
+    font-size:10px;
+    color:#666;
+    margin-top:3px;
+    letter-spacing:.8px;
+}
+
+/* FOOTER */
+footer{
+    border-top:1px solid rgba(255,255,255,.08);
+    padding:35px 20px;
+    text-align:center;
+    color:#555;
+    font-size:11px;
+    letter-spacing:1.5px;
+}
+
+footer strong{
+    color:#aaa;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+
+    .topbar{
+        padding:0 5%;
+        height:62px;
+    }
+
+    .brand{
+        font-size:16px;
+        letter-spacing:3px;
+    }
+
+    .top-title{
+        font-size:9px;
+        letter-spacing:2px;
+    }
+
+    .hero{
+        min-height:520px;
+        padding-top:50px;
+    }
+
+    .logo{
+        width:120px;
+        height:120px;
+    }
+
+    .hero h1{
+        font-size:48px;
+    }
+
+    .hero p{
+        font-size:13px;
+    }
+
+    .section{
+        width:94%;
+    }
+
+    .artist-grid{
+        grid-template-columns:1fr;
+    }
+
+    .artist-card{
+        padding:22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <div class="brand">FLIP STREAM</div>
+    <div class="top-title">Artist Profiles</div>
+</header>
+
+<section class="hero">
+
+    <img
+        class="logo"
+        src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20261108-WA0017.jpg"
+        alt="Flip Stream Logo"
+        draggable="false"
+    >
+
+    <h1>Artist Profiles</h1>
+
+    <p>
+        Discover the artists, producers and independent voices featured on Flip Stream.
+        Explore their stories, connect with them and listen to their music.
+    </p>
+
+    <div class="announcement">
+        <strong>MORE EXCLUSIVE SONGS COMING SOON</strong>
+        <span>FLIP STREAM — VERSION 2 RELEASE</span>
+    </div>
+
+    <a href="#artists" class="enter-btn">ENTER FLIP STREAM</a>
+
+</section>
+
+
+<section class="section" id="artists">
+
+    <div class="section-title">
+        <h2>THE ARTISTS</h2>
+        <p>One Vision. One Platform. One Community.</p>
+    </div>
+
+   <div class="artist-grid">
+
+    <!-- ADRIAN. -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260723-WA0025(1).jpg"
+             alt="ADRIAN."
+             draggable="false">
+
+        <div>
+            <div class="artist-name">ADRIAN.</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">adrian. is a South African rapper/producer crafting dusty, sample-driven hip-hop rooted in soul, jazz, and forgotten records. His music blends introspective lyricism with nostalgic textures, stripped-back drums &amp; deliberate imperfections. His verses unfold like scripture—layered, reflective, &amp; meant to reveal more with every listen.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/adrian.badmon?igsh=OTUzdDdlaGM1bThl"
+           target="_blank"
+           rel="noopener"
+           aria-label="ADRIAN. Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=pvXcf_W_wcxcHahf&v=TfSU5Rx5kHc&feature=youtu.be"
+           target="_blank"
+           rel="noopener"
+           aria-label="ADRIAN. YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+        <button class="play-btn" data-file="Adoro.mp3">▶</button>
+        <div class="song-info">
+            <div class="song-name">Adoro</div>
+            <div class="song-artist">ADRIAN.</div>
+        </div>
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260723-WA0006(1).jpg"
+             alt="CANIS MJR"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">CANIS MJR</div>
+            <div class="artist-genre">HIP-HOP INSTRUMENTAL</div>
+        </div>
+    </div>
+
+    <div class="bio">CANIS MJR is a Durban-born alternative rap artist known for his sharp, conscious lyricism, blending introspective Boom-Bap with Trap-infused sounds. Representing Umkhumbane, the seasoned performer has dominated underground scenes in Durban and Johannesburg and won Zakwe’s Rap iFact: Hood vs Hood competition.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/yeswecanistv?igsh=MW42aXVzaXBjN25nYw=="
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=KJ41MB6YmD6AhSbd&v=Ls57s2-Cc9c&feature=youtu.be"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260828-WA0006.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Revolutionary 2.0</div>
+            <div class="song-artist">CANIS MJR</div>
+        </div>
+
+    </div>
+
+</article>
+
+        <!-- SWOGGER -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260107-WA0014.jpg"
+                     alt="Swogger"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">SWOGGER</div>
+                    <div class="artist-genre">Hyper-Pop</div>
+                </div>
+            </div>
+
+            <div class="bio">Born in Durban, KwaZulu-Natal and currently based in Johannesburg, South Africa. This multi-faceted talent Swogger is set to introduce the country to the expansive universe of hyperpop.</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/swoger_"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Swogger Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://m.youtube.com/watch?si=ltaEiQqt-qyf5yPq&v=DZ-0VSi_m1o&feature=youtu.be"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Swogger YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="AUD-20260909-WA0001.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Accela</div>
+                    <div class="song-artist">Swogger</div>
+                </div>
+            </div>
+
+        </article>
+
+
+        <!-- PEGG -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260905-WA0005.jpg"
+                     alt="PEGG"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">PEGG</div>
+                    <div class="artist-genre">Rap / Experimental</div>
+                </div>
+            </div>
+
+            <div class="bio">PEGG (SUPAMLUNGU) is a 23 year old Independent Rap Artist hailing from Durban , South Africa. He is an experimental mind who's creative range is one of his strong points. A lyrical titan who knows what sounds good. Beyond his solo rap projects, PEGG explores cross-genre sounds working alongside alternative acts like Poster Boy and Pilgrim Soup bands.</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/pegg.dbn?igsi=d25jNnFndnMweG5n"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="PEGG Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://m.youtube.com/watch?v=QupfXTaX-Hc&pp=iggCQAE%3D"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="PEGG YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="03 Pegg - Danger.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Danger</div>
+                    <div class="song-artist">PEGG</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="PEGG _LAPISA GMIX.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">LAPISA GMIX</div>
+                    <div class="song-artist">PEGG</div>
+                </div>
+            </div>
+
+        </article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260808-WA0032(1).jpg"
+             alt="BLITS ILLUSION"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">BLITS ILLUSION</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">Blits Illusion, also known as Mr. Milky Terkoist, is a Durban hip-hop artist who balances raw street graffiti with heavy microphone skills. When performing solo, his hard-hitting content is built directly for the streets. He also teams up with Bad Doug in the dynamic hiphop duo Automatic Silencer. Together, they create a unique blend of smooth, jazzy rhythms and intense, grimy beats designed to make you stop and truly listen.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.facebook.com/watch/?v=1709704552524673&vanity=douglas.badibake.3"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Facebook">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M13.5 8H16V4h-2.5C10.46 4 9 5.79 9 8.4V11H6v4h3v5h4v-5h3l.5-4H13v-2.2c0-.52.2-.8.5-.8z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260916-WA0001.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Fruit and veggies</div>
+            <div class="song-artist">BLITS ILLUSION</div>
+        </div>
+
+    </div>
+
+</article>
+
+        <!-- PEPSURAH -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260921-WA0019.jpg"
+                     alt="Pepsurah"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">PEPSURAH</div>
+                    <div class="artist-genre">Hip Hop</div>
+                </div>
+            </div>
+
+            <div class="bio">PEPSURAH IS A SOUTHAFRICAN RISING HIP-HOP STAR, MODELAND AN ALL-ROUND ENTERTAINER. HAILING FROM PIETERMARITZBURG, PEPSURAH IS KNOWN FOR HER CREATIVE RAPING STYLE AND VIBRANT STAGE PRESENCE</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/pepsurah_official?stkn=MXB3bXFwa21qNXAxNA%3D%3D&utm_source=qr"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Pepsurah Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://m.youtube.com/watch?si=P23GFhgKdGFk5wdv&v=RSYwAAU0-LI&feature=youtu.be"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Pepsurah YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="1. Pepsurah-Wemngani.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Wemngani</div>
+                    <div class="song-artist">Pepsurah</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="2. Pepsurah-Zulu Baddie.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Zulu Baddie</div>
+                    <div class="song-artist">Pepsurah</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="3. Pepsurah-Syabangena.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Syabangena</div>
+                    <div class="song-artist">Pepsurah</div>
+                </div>
+            </div>
+
+        </article>
+
+      <!-- PDOGG -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260913-WA0023.jpg"
+             alt="Pdogg"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">PDOGG AMAZING</div>
+            <div class="artist-genre">HIP-HOP AFRO-POP TRAP</div>
+        </div>
+    </div>
+
+    <div class="bio">Welcome to the Hook Kings Universe. KZN's very own hook God PDA (Pdogg Amazing) is an underground phenomenon who translated his iconic style of Zulu Trap and Wavy melodies into Commercial Success. The road to his unique sound began in the backroom studios in all the farmiliar hoods and suburbs of 031 Dubane</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=lfUQr4hbJtEyDn_4&v=up-ujOllSrU&feature=youtu.be"
+           target="_blank"
+           rel="noopener"
+           aria-label="Pdogg YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://www.instagram.com/pdoggamazing?igsh=cmRkdHJhOW9kaHVw"
+           target="_blank"
+           rel="noopener"
+           aria-label="Pdogg Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+        <button class="play-btn" data-file="Bother Me feat Biggy Brandz prod by Wobbly x AudioSimz.mp3">▶</button>
+        <div class="song-info">
+            <div class="song-name">Bother Me feat Biggy Brandz prod by Wobbly x AudioSimz</div>
+            <div class="song-artist">Pdogg</div>
+        </div>
+    </div>
+
+    <div class="song">
+        <button class="play-btn" data-file="Don't x Muzi M Squared.mp3">▶</button>
+        <div class="song-info">
+            <div class="song-name">Don't x Muzi M Squared</div>
+            <div class="song-artist">Pdogg</div>
+        </div>
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260727-WA0010(1).jpg"
+             alt="LYRICAL CHATTA"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">LYRICAL CHATTA</div>
+            <div class="artist-genre">HIP-HOP DANCEHALL</div>
+        </div>
+    </div>
+
+    <div class="bio">Chatta is Tanzanian : born and raised in Dar Es Salaam and currently working in Toronto, Canada. He started his musical journey in 2017 at Tanga Tanzania with his crew; wa2 flani empire . He also produces beats, favouring the BoomBap style.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/chatta_the_common_man/"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260916-WA0000.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">No fear chatta ft chivalo</div>
+            <div class="song-artist">LYRICAL CHATTA</div>
+        </div>
+
+    </div>
+
+</article>
+
+        <!-- SUPREME -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260905-WA0004.jpg"
+                     alt="Supreme"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">PROD_BY Supreme</div>
+                    <div class="artist-genre">Producer • Composer • Writer • Mixer</div>
+                </div>
+            </div>
+
+            <div class="bio">Self-taught producer, composer, writer, and mixer with nearly a decade of experience creating music. With over 1,000 hours of music produced, I’m passionate about crafting compelling sounds across multiple genres. I’ve collaborated with more than 10 artists and organizations, bringing creativity, versatility, and dedication to every project.</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/ug.supreme?igsi=endwYjltZ2xyZWxn"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Supreme Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://m.youtube.com/watch?si=89U5P4r0RdtG-ssD&v=wJ0RCviMgqg&feature=youtu.be"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Supreme YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="AUD-20260908-WA0054.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">PayCheck</div>
+                    <div class="song-artist">Supreme</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="AUD-20260909-WA0002.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Supreme Reign Beat</div>
+                    <div class="song-artist">Supreme</div>
+                </div>
+            </div>
+
+        </article>
+
+     <!-- 031SPACEY -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="IMG-20261006-WA0077.jpg"
+             alt="031SPACEY"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">031SPACEY</div>
+            <div class="artist-genre">Trap</div>
+        </div>
+    </div>
+
+    <div class="bio">
+        031SPACEY is an artist from Durban, known as Nkosi Yabelungu.
+
+        Known as the white boy with Zulu bars, he moves between English
+        and Zulu with a raw, gully energy rooted in Durban street culture.
+        His sound is trap at its core, but his world is bigger — graffiti,
+        vinyl, fashion, and real life in the gully.
+
+        More than music, it's a lifestyle. It's Gully Boyz Only.
+    </div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/031spacey?stkn=em5nbTdvcDh1bWhz&utm_source=qr"
+           target="_blank"
+           rel="noopener"
+           aria-label="031SPACEY Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://youtu.be/lFGwXh3noog?si=t4HHHIIDej5NE-_X"
+           target="_blank"
+           rel="noopener"
+           aria-label="031SPACEY YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+        <button class="play-btn" data-file="W0k!.mp3">▶</button>
+
+        <div class="song-info">
+            <div class="song-name">W0k!</div>
+            <div class="song-artist">031SPACEY</div>
+        </div>
+    </div>
+
+</article>
+
+
+        <!-- TR!P -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260901-WA0025.jpg"
+                     alt="Tr!p"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">Tr!p</div>
+                    <div class="artist-genre">Rap / Soul / Alternative</div>
+                </div>
+            </div>
+
+            <div class="bio">Tr!p is a songwriter, soul/rap composer, and alternative artist based in KwaZulu-Natal, South Africa in a small town called Pietermaritzburg. He is part of an extensive crew called @Grimes_Clique which has artists mainly from Hillcrest, Maritzburg and Westville.</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/killndu_?utm_source=qr&igsi=YmNwenh6N3h2ZDc0"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Tr!p Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="Numbers.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Numbers</div>
+                    <div class="song-artist">Tr!p</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="PDS.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">PDS</div>
+                    <div class="song-artist">TR!P</div>
+                </div>
+            </div>
+
+        </article>
+
+
+        <!-- KREESPII -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260903-WA0027.jpg"
+                     alt="Kreespii"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">KREESPII</div>
+                    <div class="artist-genre">NeoSoul • Hip Hop • TrapSoul</div>
+                </div>
+            </div>
+
+            <div class="bio">Kreespii is an independent neosoul artist, hip-hop artist and also trapsoul artist known for tracks like "TIME". Based in KZN, South Africa Kreespii is a force to be reconnect with at a cypher as he can go off the dome without missing a beat! And his pen game is on point.</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/kreespiirsa?igsh=MXB4dnZ3Y3dlOWZ4eQ=="
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Kreespii Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://m.youtube.com/watch?v=XDLfqS246FI&feature=youtu.be"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Kreespii YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="Kreespii - Voice Of The Youth.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Voice Of The Youth</div>
+                    <div class="song-artist">Kreespii</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="Kreespii -sing final.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">sing final</div>
+                    <div class="song-artist">Kreespii</div>
+                </div>
+            </div>
+
+        </article>
+
+
+        <!-- CHAD THOMPSON -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260908-WA0003.jpg"
+                     alt="Chad Thompson"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">CHAD THOMPSON</div>
+                    <div class="artist-genre">Alternative</div>
+                </div>
+            </div>
+
+            <div class="bio">Chad Thompson creates dreamy alternative music where ocean tides meet cosmic skies. Blending hazy guitar, grunge textures, psychedelic sounds and whimsical storytelling, his music feels like drifting through an otherworldly dream at dusk— somewhere between the sea, the stars, and the unknown.</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/wizardchad"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Chad Thompson Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://m.youtube.com/watch?si=tinWwVAIEWuqwj7k&v=4tfcUQy4rtg&feature=youtu.be"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Chad Thompson YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="AUD-20260908-WA0004.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">The Lantern Bearers</div>
+                    <div class="song-artist">Chad Thompson</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="AUD-20260908-WA0006.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">The Sentinel Moon</div>
+                    <div class="song-artist">Chad Thompson</div>
+                </div>
+            </div>
+
+        </article>
+
+
+        <!-- KELOYOUKNOW -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260909-WA0003.jpg"
+                     alt="KeloYouKnow"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">KELOYOUKNOW</div>
+                    <div class="artist-genre">HIP-HOP RAP</div>
+                </div>
+            </div>
+
+            <div class="bio">Rapper, singer, songwriter, and record producer Samkelo Simiso Hlophe, better known by his stage name KeloYouKnow, hails from Durban, South Africa. Growing up in the Southside of Durban, Kelo always had a deep love for music, especially hip-hop culture and rap music. The Slaughterhouse, Lil Wayne, Eminem, and Kanye West were a few of his early musical influences</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/1keloyouknow?stkn=MTFmc3d6bTV4cGRuaw%3D%3D&utm_source=qr"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="KeloYouKnow Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0-0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://m.youtube.com/watch?si=8QLKsCDjmLIzZOMV&v=A4HudJ2wQlA&feature=youtu.be"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="KeloYouKnow YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="AUD-20260910-WA0000.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Bonke</div>
+                    <div class="song-artist">KeloYouKnow</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="AUD-20260910-WA0001.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">uMina</div>
+                    <div class="song-artist">KeloYouKnow</div>
+                </div>
+            </div>
+
+        </article>
+
+      <!-- 04OUR -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260109-WA0011(1).jpg"
+             alt="04OUR"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">04OUR</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">04OUR is a contemporary rap artist whose music deeply explores themes of personal growth, resilience, and real-life experience. Known for his artistic depth and versatility, he connects strongly with the hip-hop community by continuously evolving his sound and collaborating to expand his musical footprint.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=EhmqJwsEXHxJrGLO&v=H_hDCKJhX4c&feature=youtu.be"
+           target="_blank"
+           rel="noopener"
+           aria-label="04OUR YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://www.instagram.com/04ofakind?igsh=a2tlZHY0aG1raWd2"
+           target="_blank"
+           rel="noopener"
+           aria-label="04OUR Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0-6 0zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+        <button class="play-btn" data-file="04our - Ngena Ngaphakathi.mp3">▶</button>
+        <div class="song-info">
+            <div class="song-name">Ngena Ngaphakathi</div>
+            <div class="song-artist">04OUR</div>
+        </div>
+    </div>
+
+    <div class="song">
+        <button class="play-btn" data-file="04our- Chill.mp3">▶</button>
+        <div class="song-info">
+            <div class="song-name">Chill</div>
+            <div class="song-artist">04OUR</div>
+        </div>
+    </div>
+
+</article>
+
+
+        <!-- K KWIZZY -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/Screenshot_20260910_034240_Adobe%20Acrobat.jpg"
+                     alt="K Kwizzy"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">K KWIZZY</div>
+                    <div class="artist-genre">HIP-HOP TRAP</div>
+                </div>
+            </div>
+
+            <div class="bio">K Kwizzy is a South African Underground hiphop / trap Music blending the two with Ushuni (Umbhaqanga) flows which leads to Hood Trap With Rural Experience melodies , His Sounds influence a lot of Kasi Rappers and keeps on dominating around the  roots of KZN</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/therealkkwizzy?igsi=c3RxZ3h4MTBnb2gz"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="K Kwizzy Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://m.youtube.com/watch?si=vwQ1GEZUtHtqSGjy&v=orVLUMFYLRI&feature=youtu.be"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="K Kwizzy YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="AUD-20260910-WA0003.opus">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Amanga</div>
+                    <div class="song-artist">K Kwizzy</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="AUD-20260910-WA0002.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Imali ka Zuma</div>
+                    <div class="song-artist">K Kwizzy</div>
+                </div>
+            </div>
+
+        </article>
+
+
+        <!-- SIPHOGREATBEAST -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/FB_IMG_1788062473118.jpg"
+                     alt="Siphogreatbeast"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">Siphogreatbeast</div>
+                    <div class="artist-genre">Hip Hop</div>
+                </div>
+            </div>
+
+            <div class="bio">Rap Sage Ep by Siphogreatbeast an Hip Hop EP with diverse and Raw Rap Lyrics include 5 songs out on all digital platforms Artists featured on the Rap Sage Ep Seth Lewis , Bafana, Rhyc. Mixed and Mastered by Silasbeats. </div>
+
+            <div class="socials facebook-end">
+
+                <a class="social-btn"
+   href="https://youtube.com/shorts/vv_-klTapjo?si=A8T-Pi0e1CciBEyH"
+   target="_blank"
+   rel="noopener noreferrer"
+   aria-label="YouTube">
+
+    <svg viewBox="0 0 24 24">
+        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+    </svg>
+
+</a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="AUD-20260614-WA0006.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Rap Sage Intro</div>
+                    <div class="song-artist">Siphogreatbeast</div>
+                </div>
+            </div>
+
+        </article>
+
+      <!-- THE NAME ON THE DRUM -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/Screenshot_20260915_235803_Instagram.jpg"
+             alt="THE NAME ON THE DRUM"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">THE NAME ON THE DRUM</div>
+            <div class="artist-genre">FOLK ROCK</div>
+        </div>
+    </div>
+
+    <div class="bio">The Name on the Drum is an alternative folk-rock outfit powered by brothers Ben and Nat Bruzas. Blending electric guitar, subtle percussion, and harmonicas, the duo brings an honest, thought provoking songwriting energy to the South African music scene, making them a staple at local venues and festivals like Splashy Fen.</div>
+
+    
+
+  <div class="socials">
+
+    <a class="social-btn"
+       href="https://www.instagram.com/thenameonthedrum?igsh=d3E5djVsYms4dmU1"
+       target="_blank"
+       rel="noopener"
+       aria-label="THE NAME ON THE DRUM Instagram">
+
+        <svg viewBox="0 0 24 24">
+            <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+        </svg>
+
+    </a>
+
+    <a class="social-btn"
+       href="https://m.youtube.com/watch?si=S0WNfrGHpOtws-3e&v=Vb6aTxgFPpc&feature=youtu.be"
+       target="_blank"
+       rel="noopener"
+       aria-label="THE NAME ON THE DRUM YouTube">
+
+        <svg viewBox="0 0 24 24">
+            <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+        </svg>
+
+    </a>
+
+</div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+        <button class="play-btn" data-file="TheKillingChair.mp3">▶</button>
+        <div class="song-info">
+            <div class="song-name">The Killing Chair</div>
+            <div class="song-artist">THE NAME ON THE DRUM</div>
+        </div>
+    </div>
+
+    <div class="song">
+        <button class="play-btn" data-file="Floating.mp3">▶</button>
+        <div class="song-info">
+            <div class="song-name">Floating</div>
+            <div class="song-artist">THE NAME ON THE DRUM</div>
+        </div>
+    </div>
+
+</article>
+
+
+        <!-- DUST BEATZ -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260904-WA0021.jpg"
+                     alt="DustBeatz"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">DUSTBEATZ</div>
+                    <div class="artist-genre">Artist / Producer</div>
+                </div>
+            </div>
+
+            <div class="bio">DustBeatz is a multi-platinum South African music producer, audio engineer, and beatmaker based in Durban, South Africa. He is known for his versatile production style, crafting instrumentals across a wide range of popular South African music genres. He frequently collaborates with local and mainstream South African artists.</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/dustbeatz__"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="DustBeatz Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0-0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://m.youtube.com/watch?si=a1iXdzY0J7SzeGmo&v=e_nsbHXAdvI&feature=youtu.be"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="DustBeatz YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="Dustbeatz ft Lacabra_Njengami.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Njengami</div>
+                    <div class="song-artist">DustBeatz</div>
+                </div>
+            </div>
+
+        </article>
+
+  <!-- DOC -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260719-WA0008.jpg"
+             alt="DOC"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">DOC</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">DOC is a South African artist whose music is rooted in self-discovery, consciousness, and personal growth. Since  2014, he has used his art as a platform to inspire reflection, challenge perspectives, and encourage meaningful conversations. dOC works closely with childhood friend, Wonderboy Records to make each track.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/dochowickphysicaltherapy/?hl=en"
+           target="_blank"
+           rel="noopener"
+           aria-label="DOC Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=Izz8f6bHNzG8Nnd0&v=VjpmGfq2qvE&feature=youtu.be"
+           target="_blank"
+           rel="noopener"
+           aria-label="DOC YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+    <button class="play-btn" data-file="8.) Feshe,dOC - We muntu(Prod. By Wonderb).mp3" onclick="playSong(this)">▶</button>
+    <div class="song-info">
+        <div class="song-name">We muntu</div>
+        <div class="song-artist">DOC</div>
+    </div>
+</div>
+
+</article>
+
+
+        <!-- SHIRLEY CALLAGHAN -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/Screenshot_20260910_043646_Adobe%20Acrobat.jpg"
+                     alt="Shirley Callaghan"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">SHIRLEY CALLAGHAN</div>
+                    <div class="artist-genre">DARK-FOLK ALT-INDIE</div>
+                </div>
+            </div>
+
+            <div class="bio">An independent singer-songwriter from County Clare, Ireland, writing dark folk and alternative indie music with acoustic roots. Her songs explore themes of grief, power, injustice, resilience and survival. Shirley writes and records in her home studio in Ireland. She releases her own music and recently performed at the Cavern Club, Liverpool</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/shirleycallaghanmusic/"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Shirley Callaghan Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0-0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://youtu.be/QPUtOA8VagY?is=wG8cn9aNkcpf05Rq"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Shirley Callaghan YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="flower_in_the_winter_mp3_74493.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Flower in the Winter</div>
+                    <div class="song-artist">Shirley Callaghan</div>
+                </div>
+            </div>
+
+        </article>
+     
+
+     <!-- PURP MALI -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="IMG-20260904-WA0004(2).jpg"
+             alt="Purp Mali"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">PURP MALI</div>
+            <div class="artist-genre">HIP HOP / TRAP / TRAP-SOUL / R&B</div>
+        </div>
+    </div>
+
+    <div class="bio">
+        Purp Mali is a South African independent artist and storyteller whose music explores love, identity, ambition, and the realities of everyday life. His work reflects the experience of a young Black man navigating modern Africa while pursuing forgotten truths and confronting social and political realities.
+
+        His standout release, "Heartbreaks & Makeups," blends personal heartbreak with commentary on the injustices faced by Bantu people worldwide and has surpassed 450,000 combined streams across platforms since its 2020 release.
+    </div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://youtu.be/QF9G-tlr4bI?si=KZCpxjS_AS1sWuTO"
+           target="_blank"
+           rel="noopener"
+           aria-label="Purp Mali YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+        <button class="play-btn" data-file="Purp Mali - Man Down.mp3">▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Man Down</div>
+            <div class="song-artist">Purp Mali</div>
+        </div>
+    </div>
+
+</article>
+
+
+        <!-- DBZ INTELEZI -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20251220-WA0008.jpg"
+                     alt="DBZ Intelezi"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">DBZ INTELEZI</div>
+                    <div class="artist-genre">HIP-HOP</div>
+                </div>
+            </div>
+
+            <div class="bio">16 artists, 2 studios, 3 days. A collaboration of sound forged in the pressure cooker of a 3-night studio retreat camp. Led by Pdogg Amazing, recorded by DustBeatz and pop-up guest Slim Ego.
+
+This led to a range of collaborations between PDoggAmazing, 04our, Tommy Nebula, Hoodbvby, Og Purp, GraeJxy, iSkhuluamantungwa, Tiipy, Sammie, LnxqdaArtist, the Trap Twins and Slim Ego.</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/dbzintelezitour?igsi=MXI5cjZ6d3l0cXBxNA=="
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="DBZ Intelezi Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://m.youtube.com/watch?si=ulfYnH--DCjB_MuA&v=ZMncABoBoEw&feature=youtu.be"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="DBZ Intelezi YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="Ishuu.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Ishuu</div>
+                    <div class="song-artist">DBZ Intelezi</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="goku.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">goku</div>
+                    <div class="song-artist">DBZ Intelezi</div>
+                </div>
+            </div>
+
+        </article>
+
+     
+
+        <!-- TOMMY NEBULA -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260722-WA0007(1).jpg"
+                     alt="Tommy Nebula"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">TOMMY NEBULA</div>
+                    <div class="artist-genre">HIP-HOP R&B</div>
+                </div>
+            </div>
+
+            <div class="bio">Tommy Nebula (a.k.a. Graphiic) is a Durban rapper, singer, songwriter, and producer making waves in the local hip-hop scene. Awarded Rockstar of the Year in 2019, he is known for global features, hit local collaborations, and delivering explosive energy with sharp lyricism on every track.</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/tommynebula?igsh=M3BieHlhNXg4cWd3&utm_source=qr"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="Tommy Nebula Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0-0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="415 tag added.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">415</div>
+                    <div class="song-artist">Tommy Nebula</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="Dont like me tag added.mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Dont like me</div>
+                    <div class="song-artist">Tommy Nebula</div>
+                </div>
+            </div>
+
+        </article>
+
+      <!-- NOXX DENNIS -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/Screenshot_20260915_065615_Adobe Acrobat.jpg"
+             alt="NOXX DENNIS"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">NOXX DENNIS</div>
+            <div class="artist-genre">R&B AFRO-POP</div>
+        </div>
+    </div>
+
+    <div class="bio">Noxx Dennis is a rising South African recording artist and songwriter carving out a unique space in the contemporary urban music scene. Based in Durban, KwaZulu-Natal, she delivers a compelling fusion of RnB, Afro-Pop, Trap, Hip-Hop, and local sounds driven by sharp lyricism and a high-energy performance style.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=BqLSnOhsSt5okX2j&v=6cWm6PBICUs&feature=youtu.be"
+           target="_blank"
+           rel="noopener"
+           aria-label="NOXX DENNIS YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://www.instagram.com/noxx_dennis/?hl=en"
+           target="_blank"
+           rel="noopener"
+           aria-label="NOXX DENNIS Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0-6 0zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+        <button class="play-btn" data-file="Noxx_Dennis_Puttenwork.mp3">▶</button>
+        <div class="song-info">
+            <div class="song-name">Puttenwork</div>
+            <div class="song-artist">NOXX DENNIS</div>
+        </div>
+    </div>
+
+</article>
+
+        <!-- DAWN -->
+        <article class="artist-card">
+
+            <div class="artist-head">
+                <img class="artist-img"
+                     src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260110-WA0004(4).jpg"
+                     alt="DAWN Melanie"
+                     draggable="false">
+
+                <div>
+                    <div class="artist-name">DAWN MELANIE</div>
+                    <div class="artist-genre">CELTIC - FOLK MASKAND</div>
+                </div>
+            </div>
+
+            <div class="bio">Dawn Melanie is a passionately original singersongwriter and guitarist rooted in KwaZulu-Natal. Known for her eclectic fusion of Celtic Folk, Gypsy Jazz, and Maskanda, she brings a storytelling energy to the stage with intricate melodies and vibrant vocals, remaining a favorite feature at music festivals across South Africa.</div>
+
+            <div class="socials">
+
+                <a class="social-btn"
+                   href="https://www.instagram.com/dawn_melanie_?stkn=Zm80NjFfdGk3bTZs"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="DAWN MELANIE Instagram">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0-0-6zm5.25-3.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5z"/>
+                    </svg>
+
+                </a>
+
+                <a class="social-btn"
+                   href="https://youtu.be/Q_PS1SuxADk?si=CHpryw_cgfg4cit-"
+                   target="_blank"
+                   rel="noopener"
+                   aria-label="DAWN MELANIE YouTube">
+
+                    <svg viewBox="0 0 24 24">
+                        <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31.2 31.2 0 0 0 0 12a31.2 31.2 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.2 31.2 0 0 0 24 12a31.2 31.2 0 0 0-.5-5.8zM9.6 15.5v-7l6.2 3.5-6.2 3.5z"/>
+                    </svg>
+
+                </a>
+
+            </div>
+
+            <div class="songs-title">Music</div>
+
+            <div class="song">
+                <button class="play-btn" data-file="3) Promised Land(Radio Edit).mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Promised Land (Radio Edit)</div>
+                    <div class="song-artist">Dawn Melanie</div>
+                </div>
+            </div>
+
+            <div class="song">
+                <button class="play-btn" data-file="1) Africa Rising (Radio Edit).mp3">▶</button>
+                <div class="song-info">
+                    <div class="song-name">Africa Rising (Radio Edit)</div>
+                    <div class="song-artist">Dawn Melanie</div>
+                </div>
+            </div>
+
+        </article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/motion_photo_6115220423132982971.jpg"
+             alt="DROP CULTURE"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">DROP CULTURE</div>
+            <div class="artist-genre">ROCK ALTERNATIVE</div>
+        </div>
+    </div>
+
+    <div class="bio">Drop Culture are a 4-piece rock band based in Durban, South Africa. Inspired mainly by music from the 90's and 2000's, the band plays a style of music ranging from Contemporary to Hard Rock.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/dropculture_sa?igsh=MWs5Z3AwMDVocGl4ag=="
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="Drop Culture - Rollercoaster.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Drop Culture - Rollercoaster</div>
+            <div class="song-artist">DROP CULTURE</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260807-WA0012(1).jpg"
+             alt="PATO DA HYPEMONSTER"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">PATO DA HYPEMONSTER</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">Based in Lagos, Nigeria Pato is a multifaceted character. IA rapper, hypemcee, an entrepreneur, a social media influencer and graduate Bsc Psychology and also an activist.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/itz_p.a.t.o?igsh=MTVmcmhocmpqcHY4cg%3D%3D&utm_source=qr"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="FAR_AWAY_PATO_N_PROPHESY.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">FAR AWAY PATO N PROPHESY</div>
+            <div class="song-artist">PATO DA HYPEMONSTER</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260809-WA0051(1).jpg"
+             alt="TOXIC 4SIll"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">TOXIC 4SIll</div>
+            <div class="artist-genre">HIP-HOP DANCEHALL</div>
+        </div>
+    </div>
+
+    <div class="bio">Toxic 4sill is a group of 4 artist from Mpophomeni township, KZN. We do rap &amp; do dancehall music . We have the best attitude , style with an old touch of energy givin to the pole toxic wise.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://m.youtube.com/shorts/xaXucmG4cfU?si=D40xAjT14sbQ6XOG"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="One_day_-_OG Cocovula Magalobhe_-_Mpophoma_&_Washington_-_by iLL Sick .m4a"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Toxic 4sill</div>
+            <div class="song-artist">TOXIC 4SIll</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260730-WA0005(1).jpg"
+             alt="031 MSHINI"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">031 MSHINI</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">Im a Chesterville based Producer in the underground scene, working with hungry, talented artists who shared the same dream. Names like Pdogg Amazing, Celestial Mic, Lord Script, and Dann Avenew are part of that journey. For me, it’s never just been about making music. It’s about feeling it, building it from the ground up, and giving every track a piece of who I am. This is more than a passion… it’s my story.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/031mshini?igsh=MW9zajl6Y2hkdXJqZw=="
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=-5PT0tUYOk4UnVdM&v=DtTu41kbGWY&feature=youtu.be"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="Mshini ft Pdogg Amazing and Slim Ego.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Khokha Kanjani</div>
+            <div class="song-artist">031 MSHINI</div>
+        </div>
+
+    </div>
+
+</article>
+
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260805-WA0023(1).jpg"
+             alt="JUNTAO FOMIX"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">JUNTAO FOMIX</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">I aim to utilize Hip Hop Culture as a platform for youth growth as it's primary purpose to prevent any colossal damage caused by negative social impact… I seek to create a place of safety for the endangered and vulnerable creatives through arts and history in education… With Hip Hop I also seek to create it's archive in this here land so as to provide a guideline for the next generations to come…</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/juntaofonix/"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?v=Q0RaOqmpyZc&pp=iggCQAE%3D#bottom-sheet"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="Sleep When I'm Dead - JuntaoFonix.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Sleep When I'm Dead</div>
+            <div class="song-artist">JUNTAO FOMIX</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260807-WA0029(1).jpg"
+             alt="USOS"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">USOS</div>
+            <div class="artist-genre">HIP-HOP ALT- R&amp;B</div>
+        </div>
+    </div>
+
+    <div class="bio">uSister of Soul, aka uSos, is a Durban-based rapper, singer, songwriter and performer. A firm believer that music is the world’s oldest language, she brings raw energy, honesty, and a rockstar edge to every stage.  Having shared stages with artists like PDogg, SlimEgo and Pegg, uSos is on a mission to put the KZN sound on the world map.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/imina_usos/"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="Pace-prodbymsfit.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Pace</div>
+            <div class="song-artist">USOS</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20251220-WA0017(1).jpg"
+             alt="THE THRON3"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">THE THRON3</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">The Thron3 is a 3-member hip-hop outfit out of KZN, formed by lifelong friends Jersey Trill, KASH RULEZ, and RASCO. Representing their own label, Rogue Mob Music (RMM), the group brings a collaborative energy to the scene, backed by beats from KeloYouKnow and bringing their distinct sound to hip-hop events across Durban and the Midlands.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/thethron3ww?igsh=OTUzcDFmMGllcDRvg"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=kwS3LdGPdflFD1LH&v=ul7TMG-aL6E&feature=youtu.be"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260916-WA0002.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Prince Ov Howick</div>
+            <div class="song-artist">THE THRON3</div>
+        </div>
+
+    </div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260916-WA0003.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">New Level</div>
+            <div class="song-artist">THE THRON3</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260916-WA0002(1).jpg"
+             alt="Jahshua"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">Jahshua</div>
+            <div class="artist-genre">PSY-TRANCE TECHNO DNB</div>
+        </div>
+    </div>
+
+    <div class="bio">is a DJ/producer from the Midlands, KwaZulu-Natal, South Africa. Currently based in Cape Town. He works across techno, psytrance, and drum &amp; bass - different energies, but all tied together by driving rhythm and detailed sound design. Built for the floor, with room for atmosphere. Jahshua has released music on various labels over the years. The focus is rhythm that hits hard and space that lets it breathe.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/jahshua_lithgow/?hl=en"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=v9avLm18I5qhpbUL&v=eMw130cKiDc&feature=youtu.be"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260918-WA0005.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Synaptic Overload - Jahshua</div>
+            <div class="song-artist">Jahshua</div>
+        </div>
+
+    </div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260918-WA0006.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Retro Ravers - Jahshua</div>
+            <div class="song-artist">Jahshua</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260730-WA0002(1).jpg"
+             alt="DANN AVENUE"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">DANN AVENUE</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">is a South African hip-hop artist known for cinematic storytelling, dark aesthetics, and emotionally driven music. Blending hard-hitting trap production with introspective lyricism, he creates immersive experiences that explore ambition, struggle, identity, and perseverance.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/dannavenew"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?v=uP18iGOdSqo&pp=ygUSZGFubiBhdmVuZXcgZm9yIG1l"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260918-WA0007.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Dann Avenew - break her heart</div>
+            <div class="song-artist">DANN AVENUE</div>
+        </div>
+
+    </div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260918-WA0008.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Dann Avenew-kekelezi</div>
+            <div class="song-artist">DANN AVENUE</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260916-WA0010(1).jpg"
+             alt="DOUBLET"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">DOUBLET</div>
+            <div class="artist-genre">HIP-HOP TRAP</div>
+        </div>
+    </div>
+
+    <div class="bio">Luthando Mbotho, known artistically as Double T, is an Eastern Cape-born, KZN raised trap and rap artist. Drawing creative inspiration heavily from his personal journey. And presented in his authentic lyrical storytelling way.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/reel/C2I7c9Io5cP/?stkn=cTFrMWZ3enR3aTJ2"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260918-WA0009.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">DoubleT - Type</div>
+            <div class="song-artist">DOUBLET</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260903-WA0029(1).jpg"
+             alt="THE VAST ODDITY"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">THE VAST ODDITY</div>
+            <div class="artist-genre">PSYCHEDELIC DREAM-ROCK</div>
+        </div>
+    </div>
+
+    <div class="bio">The Vast Oddity is Chad and Cayla, broadcasting strange transmissions from the outer edges of reality. Cosmic, psychedelic, surreal, and made for the misfits, dreamers, and the strange.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/thevastoddity"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?v=AlML7OU1amA&pp=iggCQAE%3D#bottom-sheet"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260918-WA0010.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">"The Pathless Path"</div>
+            <div class="song-artist">THE VAST ODDITY</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260728-WA0006(1).jpg"
+             alt="NQOBA ZIBUKO"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">NQOBA ZIBUKO</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">From a small township called Sobantu in the outskirts of Pietermaritzburg. I've been emceeing ever since I could remember, the freestyling you see at the cypher has always been our culture. It's quite a joke to us that there's a person who thinks they can represent these streets without the ability to freestyle. By that I'm not saying people shouldn't rap, don't get me wrong. It's all love.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.tiktok.com/@thestreets365/video/7363278517016022280?_r=1&_t=ZS-99p9DdjHtw5"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="TikTok">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-4.77-4.16V2h-3.93v13.67a2.87 2.87 0 1 1-2.87-2.87c.3 0 .59.05.86.13v-4a6.85 6.85 0 1 0 5.94 6.78V8.78a8.73 8.73 0 0 0 4.77 1.42z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="10. Oh Yes!.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">10. Oh Yes!</div>
+            <div class="song-artist">NQOBA ZIBUKO</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260723-WA0007(1).jpg"
+             alt="HOOD BVBY"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">HOOD BVBY</div>
+            <div class="artist-genre">HIP-HOP</div>
+        </div>
+    </div>
+
+    <div class="bio">Born in Zambia and raised in South Africa, Hoodbvby formally known as Felix/Mr kally is a young rapper based in the City of 031, coming in with a different sound of rap that does nothing but give you a positive feel of life.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/1st.son.of.alice?igsh=eWhwNmd3YWJoOGJ6"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=bE0vFpaWAgTpkAwZ&v=Kea8vTjpGYI&feature=youtu.be"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260918-WA0011.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Brrr</div>
+            <div class="song-artist">HOOD BVBY</div>
+        </div>
+
+    </div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="AUD-20260918-WA0012.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Mr kally</div>
+            <div class="song-artist">HOOD BVBY</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260916-WA0023(1).jpg"
+             alt="PRETTY & THE MUSIC"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">PRETTY &amp; THE MUSIC</div>
+            <div class="artist-genre">JAZZ SOUL</div>
+        </div>
+    </div>
+
+    <div class="bio">Combing my love for music, married with my first, poetry, I go by the name: Pretty &amp; The Music. Accompanied by guitar, keys, drums and backing vocals or a duet. Eclectic sounds zig-zagging across genres including African rhythm, soul, jazz, ancestral sounds, reggae, rhythm and blues with an underpinning undertone of poetry.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/prettyandthemusic/"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="Fantasy ft. Sim Li & Pretty & The Music.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Fantasy ft. Sim Li &amp; Pretty &amp; The Music</div>
+            <div class="song-artist">PRETTY &amp; THE MUSIC</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260916-WA0017(2).jpg"
+             alt="GARDEN OF EDEN"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">GARDEN OF EDEN</div>
+            <div class="artist-genre">PSY-TRANCE</div>
+        </div>
+    </div>
+
+    <div class="bio">Adam Findlay is a South African producer, DJ, and Darker Dimensions crew member releasing under Patronus Records. Shaped by the Midlands bohemian scene and mountain climbing, he transforms forest trails and open skies into deep, organic psytrance.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/p/DTHfk-GiGM7/?hl=en&img_index=5"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="Garden of Eden and DIA - A streetcar named Darkness.mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Garden of Eden and DIA - A streetcar named Darkness</div>
+            <div class="song-artist">GARDEN OF EDEN</div>
+        </div>
+
+    </div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="Garden of Eden - Savage bush hotel (Extratone Mastering v3).mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Garden of Eden - Savage bush hotel (Extratone Mastering v3)</div>
+            <div class="song-artist">GARDEN OF EDEN</div>
+        </div>
+
+    </div>
+
+</article>
+
+     <!-- ARTIST -->
+<article class="artist-card">
+
+    <div class="artist-head">
+        <img class="artist-img"
+             src="https://creativeonlinebranding-png.github.io/Artists-Profiles-/IMG-20260904-WA0002(1).jpg"
+             alt="THE ELECTRIC HATSTANDS"
+             draggable="false">
+
+        <div>
+            <div class="artist-name">THE ELECTRIC HATSTANDS</div>
+            <div class="artist-genre">ALT-ROCK COUNTRY</div>
+        </div>
+    </div>
+
+    <div class="bio">The Electric Hatstands are an alternative acoustic rock duo from the KwaZulu-Natal Midlands in South Africa, formed by the husband-and-wife team Talya Mari and Gareth Maré. Their music blends elements of alternative rock, hard rock, and country storytelling.</div>
+
+    <div class="socials">
+
+        <a class="social-btn"
+           href="https://www.instagram.com/theelectrichatstands?igsi=MXY2Z3lwZmVtN2h5"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Instagram">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 2A2.5 2.5 0 1 0 14.5 12 2.5 2.5 0 0 0 12 9.5zM17.5 6a1.25 1.25 0 1 1-1.25 1.25A1.25 1.25 0 0 1 17.5 6z"/>
+            </svg>
+
+        </a>
+
+        <a class="social-btn"
+           href="https://m.youtube.com/watch?si=eJqRwF62J7JPgg3y&v=cgn1MkGejYo&feature=youtu.be"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="YouTube">
+
+            <svg viewBox="0 0 24 24">
+                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.5v-7L16 12l-6.4 3.5z"/>
+            </svg>
+
+        </a>
+
+    </div>
+
+    <div class="songs-title">Music</div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="Old Man Guppy (MASTER).mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Old Man Guppy</div>
+            <div class="song-artist">THE ELECTRIC HATSTANDS</div>
+        </div>
+
+    </div>
+
+    <div class="song">
+
+        <button
+            class="play-btn"
+            data-file="Coffee Stains (MASTER) (1).mp3"
+            onclick="playSong(this)"
+        >▶</button>
+
+        <div class="song-info">
+            <div class="song-name">Coffee Stains</div>
+            <div class="song-artist">THE ELECTRIC HATSTANDS</div>
+        </div>
+
+    </div>
+
+</article>
+     
+    </div>
+
+</section>
+
+
+<footer>
+    © 2026 <strong>FLIP STREAM</strong> — One Vision. One Platform. One Community.
+</footer>
+
+
+<audio id="audioPlayer"
+       preload="metadata"
+       controlsList="nodownload noplaybackrate"
+       disablePictureInPicture>
+</audio>
+
+
+<script>
+
+/*
+=========================================================
+FLIP STREAM GITHUB PAGES ASSET LOCATION
+=========================================================
+All images and music are loaded from this GitHub Pages
+folder. This prevents the relative-path 404 problem.
+=========================================================
+*/
+
+const GITHUB_BASE =
+"https://creativeonlinebranding-png.github.io/Artists-Profiles-/";
+
+
+const audioPlayer = document.getElementById("audioPlayer");
+
+let currentButton = null;
+let currentFile = "";
+
+
+const buttons = document.querySelectorAll(".play-btn");
+
+
+/*
+Encode filenames correctly while keeping the GitHub
+folder URL unchanged.
+*/
+function fileURL(filename){
+
+    return GITHUB_BASE +
+        filename
+        .split("/")
+        .map(part => encodeURIComponent(part))
+        .join("/");
+
+}
+
+
+function resetButton(button){
+
+    if(button){
+        button.textContent = "▶";
+    }
+
+}
+
+
+buttons.forEach(button => {
+
+    button.addEventListener("click", async function(){
+
+        const filename = this.getAttribute("data-file");
+        const source = fileURL(filename);
+
+
+        /* Same song */
+        if(currentFile === source){
+
+            if(!audioPlayer.paused){
+
+                audioPlayer.pause();
+                this.textContent = "▶";
+
+            }else{
+
+                try{
+
+                    await audioPlayer.play();
+                    this.textContent = "❚❚";
+
+                }catch(error){
+
+                    console.error(error);
+
+                }
+
+            }
+
+            return;
+
+        }
+
+
+        /* Stop previous */
+
+        if(currentButton){
+            resetButton(currentButton);
+        }
+
+        audioPlayer.pause();
+
+
+        /* Start new song */
+
+        currentFile = source;
+        currentButton = this;
+
+        this.textContent = "❚❚";
+
+        audioPlayer.src = source;
+
+
+        try{
+
+            await audioPlayer.play();
+
+        }catch(error){
+
+            console.error("Audio playback error:", error);
+
+            this.textContent = "▶";
+
+            currentFile = "";
+            currentButton = null;
+
+            alert(
+                "This song could not be played. Please check that the audio file has been uploaded to the Artists-Profiles GitHub folder and that the filename matches exactly."
+            );
+
+        }
+
+    });
+
+});
+
+
+/* Song finished */
+
+audioPlayer.addEventListener("ended", function(){
+
+    if(currentButton){
+        currentButton.textContent = "▶";
+    }
+
+    currentButton = null;
+    currentFile = "";
+
+});
+
+
+/* Audio loading error */
+
+audioPlayer.addEventListener("error", function(){
+
+    if(currentButton){
+        currentButton.textContent = "▶";
+    }
+
+    currentButton = null;
+    currentFile = "";
+
+});
+
+
+/* Prevent image dragging */
+
+document.querySelectorAll("img").forEach(img => {
+
+    img.addEventListener("dragstart", function(event){
+
+        event.preventDefault();
+
+    });
+
+});
+
+
+/* Prevent casual right-click saving */
+
+document.addEventListener("contextmenu", function(event){
+
+    event.preventDefault();
+
+});
+
+
+/* Prevent common save/source shortcuts */
+
+document.addEventListener("keydown", function(event){
+
+    if(
+        (event.ctrlKey || event.metaKey) &&
+        (
+            event.key.toLowerCase() === "s" ||
+            event.key.toLowerCase() === "u"
+        )
+    ){
+
+        event.preventDefault();
+
+    }
+
+});
+
+
+/* Prevent audio dragging */
+
+audioPlayer.addEventListener("dragstart", function(event){
+
+    event.preventDefault();
+
+});
+
+</script>
+
+</body>
+</html>
